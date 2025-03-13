@@ -1,0 +1,10 @@
+/* Screenshot 2025-03-07 at 2.46.06 AM 3 */
+
+position: absolute;
+width: 1440px;
+height: 454px;
+left: 0px;
+top: 0px;
+
+background: url(Screenshot 2025-03-07 at 3.17.25 AM.png);
+opacity: 0.9;
