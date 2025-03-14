@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Header Styles */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .search-bar {
+            flex: 1;
+            margin: 0 10px;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background-color: #f5f5f5;
+        }
+        
+        .wishlist-icon, .profile-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* Hero Image */
+        .hero-image {
+            width: 100%;
+            height: 200px;
+            background-image: url('https://via.placeholder.com/500x200');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        /* Login Form */
+        .login-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 350px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .login-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #222;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: white;
+            padding: 20px 15px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .footer-column {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            background-color: #444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .rating-info {
+            text-align: center;
+            font-size: 12px;
+            margin-bottom: 15px;
+            color: #aaa;
+        }
+        
+        .rating-stars {
+            color: #4CAF50;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <header>
+            <div class="logo" onclick="window.location.href='index.html'">Logo</div>
+            <div class="search-bar">
+                <input type="text">
+            </div>
+            <div class="wishlist-icon">♡</div>
+            <div class="profile-icon">👤</div>
+        </header>
+        
+        <div class="hero-image"></div>
+        
+        <div class="login-container">
+            <h2 class="login-title">Log in and get exploring</h2>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password">
+            </div>
+            
+            <button class="login-button" onclick="window.location.href='index.html'">Log in</button>
+        </div>
+        
+        <footer>
+            <div class="social-icons">
+                <div class="social-icon">f</div>
+                <div class="social-icon">𝕏</div>
+                <div class="social-icon">P</div>
+                <div class="social-icon">📷</div>
+                <div class="social-icon">▶</div>
+                <div class="social-icon">𝓣</div>
+            </div>
+            
+            <div class="rating-info">
+                <span>★★★★★</span>
+                <span class="rating-stars">4.7 rating | 347,560 reviews</span>
+                <span>© Trustpilot</span>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-column">Help Center</div>
+                <div class="footer-column">Careers</div>
+                <div class="footer-column">Travel Agents</div>
+                <div class="footer-column">Watch Blog</div>
+                <div class="footer-column">Privacy and Cookies Statement</div>
+                <div class="footer-column">Sitemap</div>
+                <div class="footer-column">Become an Affiliate</div>
+                <div class="footer-column">About Addo</div>
+                <div class="footer-column">Insider Sign-up</div>
+                <div class="footer-column">Terms</div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

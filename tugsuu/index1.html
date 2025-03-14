@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Header Styles */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        .search-bar {
+            flex: 1;
+            margin: 0 10px;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background-color: #f5f5f5;
+        }
+        
+        .wishlist-icon, .profile-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* Hero Image */
+        .hero-image {
+            width: 100%;
+            height: 200px;
+            background-image: url('https://via.placeholder.com/500x200');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 15px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+        
+        .filter-button {
+            padding: 8px 15px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .sort-dropdown {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+        
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .image-card {
+            position: relative;
+        }
+        
+        .image-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .favorite-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .image-info {
+            padding: 5px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+        
+        .rating {
+            color: #f39c12;
+        }
+        
+        .show-more {
+            display: block;
+            margin: 20px auto;
+            padding: 8px 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            text-align: center;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #222;
+            color: white;
+            padding: 20px 15px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .footer-column {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            background-color: #444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .rating-info {
+            text-align: center;
+            font-size: 12px;
+            margin-bottom: 15px;
+            color: #aaa;
+        }
+        
+        .rating-stars {
+            color: #4CAF50;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <header>
+            <div class="logo">Logo</div>
+            <div class="search-bar">
+                <input type="text" placeholder="Zavkhan">
+            </div>
+            <div class="wishlist-icon">♡</div>
+            <div class="profile-icon" onclick="window.location.href='login.html'">👤</div>
+        </header>
+        
+        <div class="hero-image"></div>
+        
+        <div class="main-content">
+            <h1 class="page-title">Top Visions of Zavkhan</h1>
+            
+            <div class="filters">
+                <button class="filter-button">All filters</button>
+                <button class="filter-button">
+                    <span>Select dates</span>
+                    <span>📅</span>
+                </button>
+            </div>
+            
+            <div class="sort-dropdown">
+                <span>Sort by:</span>
+                <select>
+                    <option>Recommended</option>
+                </select>
+            </div>
+            
+            <div class="image-grid">
+                <!-- Image 1 -->
+                <div class="image-card">
+                    <img src="image1.jpg" >
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.9</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум</div>
+                    </div>
+                </div>
+                
+                <!-- Image 2 -->
+                <div class="image-card">
+                    <img src="https://via.placeholder.com/150/3498DB">
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.8</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум.</div>
+                    </div>
+                </div>
+                
+                <!-- Image 3 -->
+                <div class="image-card">
+                    <img src="https://via.placeholder.com/150/F1C40F" >
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.8</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум.</div>
+                    </div>
+                </div>
+                
+                <!-- Image 4 -->
+                <div class="image-card">
+                    <img src="https://via.placeholder.com/150/2ECC71">
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.9</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум.</div>
+                    </div>
+                </div>
+                
+                <!-- Image 5 -->
+                <div class="image-card">
+                    <img src="https://via.placeholder.com/150/9B59B6" >
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.7</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум.</div>
+                    </div>
+                </div>
+                
+                <!-- Image 6 -->
+                <div class="image-card">
+                    <img src="https://via.placeholder.com/150/E74C3C" >
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.9</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум.</div>
+                    </div>
+                </div>
+                
+                <!-- Repeat images for rows 3 and 4 -->
+                <div class="image-card">
+                    <img src="https://via.placeholder.com/150/34495E" >
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.8</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум.</div>
+                    </div>
+                </div>
+                
+                <div class="image-card">
+                    <img src="https://via.placeholder.com/150/3498DB" >
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.8</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум.</div>
+                    </div>
+                </div>
+                
+                <div class="image-card">
+                    <img src="https://via.placeholder.com/150/F1C40F" >
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.9</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум.</div>
+                    </div>
+                </div>
+                
+                <div class="image-card">
+                    <img src="https://via.placeholder.com/150/2ECC71">
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.9</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум.</div>
+                    </div>
+                </div>
+                
+                <div class="image-card">
+                    <img src="" >
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.8</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум.</div>
+                    </div>
+                </div>
+                
+                <div class="image-card">
+                    <img src="https://via.placeholder.com/150/E74C3C">
+                    <button class="favorite-button">♡</button>
+                    <div class="image-info">
+                        <div class="rating">★ 4.9</div>
+                        <div>отгон тэнгэр уул.Завхан аймгийн алдар хаан сум.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="show-more">Show more</button>
+        </div>
+        
+        <footer>
+            <div class="social-icons">
+                <div class="social-icon">f</div>
+                <div class="social-icon">𝕏</div>
+                <div class="social-icon">P</div>
+                <div class="social-icon">📷</div>
+                <div class="social-icon">▶</div>
+                <div class="social-icon">𝓣</div>
+            </div>
+            
+            <div class="rating-info">
+                <span>★★★★★</span>
+                <span class="rating-stars">4.7 rating | 347,560 reviews</span>
+                <span>© Trustpilot</span>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-column">Help Center</div>
+                <div class="footer-column">Careers</div>
+                <div class="footer-column">Travel Agents</div>
+                <div class="footer-column">Watch Blog</div>
+                <div class="footer-column">Privacy and Cookies Statement</div>
+                <div class="footer-column">Sitemap</div>
+                <div class="footer-column">Become an Affiliate</div>
+                <div class="footer-column">About Addo</div>
+                <div class="footer-column">Insider Sign-up</div>
+                <div class="footer-column">Terms</div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
