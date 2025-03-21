@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wishList</title>
+    <link rel="stylesheet" href="style_w.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+</head>
+<body>
+    
+    <header>
+        <div class="leftHeader">
+            <div class="logo">Logo</div>
+
+            <div class="search-div">
+                <button class="search-btn"></button>
+                <input type="text" placeholder ="search" class="input_section">
+            </div>
+        </div>
+        
+        <div class="rigthHeader">
+            <button class="wishList">
+                <i class="heart" ></i> <span>Wishlist</span>
+            </button>
+
+            <button class="userbtn"></button>
+        </div>
+    </header>
+
+    
+        <h1>My wishlist</h1>
+        <div class="sort-container">
+            <button id="sortBtn">Sort by:</button>
+            <ul id="sortOptions" class="hidden">
+                <li data-value="name">Name</li>
+                <li data-value="date">Date</li>
+                <li data-value="popularity">Popularity</li>
+            </ul>
+        </div>
+    
+
+    <section class="map-container">
+        <div id="map"></div>
+    </section>
+
+    <section class="wishlist">
+        <div class="location">
+            <div class="location-header">
+                <i class="pin current-location"></i> Chandmani (location you are)
+            </div>
+        </div>
+
+        <div class="wishlist-item">
+            <i class="pin"></i>
+            <div class="info">
+                <h3>Erdenekhairkhan</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+            </div>
+            <img src="../images/image1.jpg" alt="Erdenekhairkhan">
+        </div>
+
+        <div class="wishlist-item">
+            <i class="pin"></i>
+            <div class="info">
+                <h3>Buga</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+            </div>
+        </div>
+
+        <div class="wishlist-item">
+            <i class="pin"></i>
+            <div class="info">
+                <h3>Zavhanmandal</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+            </div>
+        </div>
+
+        <div class="wishlist-item">
+            <i class="pin"></i>
+            <div class="info">
+                <h3>Sanmargats</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+            </div>
+        </div>
+
+        <div class="wishlist-item">
+            <i class="pin"></i>
+            <div class="info">
+                <h3>Tsestsen-Uul</h3>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
