@@ -3,30 +3,12 @@ import TopBar from "../../components/TopBar";
 export default function Dashboard() {
     return (
       <div>
-        <div class="header">
-        <nav class="navbar">
-            <div class="logo">
-                <button>Logo</button>
-            </div>
-            <div class="menu">
-                <button class="wishlist">
-                    ❤️ Wishlist
-                </button>
-                <button class="profile">
-                    <img src="profile-icon.png" alt="Profile">
-                    ⌄
-                </button>
-            </div>
-        </nav>
-        <img src="./images/background.jpg" alt="Scenic Mongolia">
+    <div class="screen">
         <div class="search-bar">
             <input type="text" placeholder="Where to">
             <input type="text" placeholder="Select dates">
             <button>🔍</button>
         </div>
-    </div>
-
-    <div class="screen">
         <div class="section">
         <h2>Recently Viewed</h2>
         <div class="grid">
