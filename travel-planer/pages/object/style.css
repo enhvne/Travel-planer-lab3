@@ -11,7 +11,7 @@ body {
 }
 
 .deedheseg{
-    background: url(../images/background.jpg);
+    background: url(../../public/images/background.jpg);
     background-size: cover;
 }
 
@@ -54,7 +54,7 @@ header {
 }
 
 .search-btn {
-    background: url(../images/search-icon.jpg) no-repeat center;
+    background: url(../../public/images/search-icon.jpg) no-repeat center;
     background-size: contain;
     border-radius: 50%;
     width: 18px;
@@ -91,7 +91,7 @@ header {
 }
 
 .heart {
-    background: url(../images/wishlist.png) no-repeat center;
+    background: url(../../public/images/wishlist.png) no-repeat center;
     background-size: contain;
     width: 18px;
     height: 18px;
@@ -104,7 +104,7 @@ header {
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    background: url(../images/profile.png) no-repeat center;
+    background: url(../../public/images/profile.png) no-repeat center;
     background-size: cover;
     display: flex;
     align-items: center;
@@ -231,7 +231,7 @@ h2{
 .similar {
     width: 250px;
     height: 150px;
-    background: url(../images/image2.jpg) no-repeat center;
+    background: url(../../public/images/image2.jpg) no-repeat center;
     display: flex;
     align-items: center;
     justify-content: center;
