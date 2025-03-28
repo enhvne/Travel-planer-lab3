@@ -1,12 +1,13 @@
 import TopBar from "../../components/TopBar";
+import Footer from "../../components/Footer";
 
 export default function Dashboard() {
     return (
       <div>
         <TopBar />
         <div class="search-bar">
-            <input type="text" placeholder="Where to">
-            <input type="text" placeholder="Select dates">
+            <input type="text" placeholder="Where to"/>
+            <input type="text" placeholder="Select dates"/>
             <button>🔍</button>
         </div>
 

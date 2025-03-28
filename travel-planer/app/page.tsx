@@ -13,9 +13,7 @@ import Wishlist from "@/pages/wishList/script";
 export default function Home() {
   return (
       <div>
-        <TopBar/>
-        <Object />
-        <Footer />
+        <Dashboard />
       </div>
   );
 }
