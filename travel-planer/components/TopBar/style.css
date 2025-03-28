@@ -1,3 +1,124 @@
-h2{
-    color: green;
+header {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    /* background-color: white; */
+    background-color: rgb(201, 201, 201, 0.6);
+    padding: 15px 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
+
+/* Left Header (Logo & Search Bar) */
+.leftHeader {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Logo */
+.logo {
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Search Bar */
+.search-div {
+    display: flex;
+    align-items: center;
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    padding: 5px 15px;
+    gap: 10px;
+}
+
+.search-btn {
+    background: url(../../public/images/search-icon.jpg) no-repeat center;
+    background-size: contain;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    border: none;
+    cursor: pointer;
+}
+
+.input_section {
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 14px;
+    width: 200px;
+}
+
+/* Right Header (Wishlist & User Button) */
+.rigthHeader {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Wishlist Button */
+.wishList {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+}
+
+.heart {
+    background: url(../../public/images/wishlist.png) no-repeat center;
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+}
+
+/* User Profile Button */
+.userbtn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: url(../../public/images/profile.png) no-repeat center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#aimagList {
+    position: absolute;
+    top: 100%; /* Input-ийн яг доор байрлуулна */
+    width: 100%; /* Input-ийн өргөнтэй ижилхэн болгоно */
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0px 0px 10px 10px;
+    border-top: none;
+    max-height: 200px; /* Хэт урт жагсаалт гарахаас сэргийлнэ */
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none; /* Эхэндээ нуух */
+    z-index: 10;
+}
+
+#aimagList.show {
+    display: block; /* Хайлтын үр дүн гарч ирэх үед идэвхжүүлнэ */
+}
+
+#aimagList li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+#aimagList li:hover {
+    background: #f0f0f0;
+}
+
