@@ -10,10 +10,10 @@ export default function Home() {
       <HeroSlider />
 
       {/* Recently Viewed Section */}
-      <section className="section">
+      <section className="section recently-viewed">
         <div className="container">
           <h2 className="section-title">Recently viewed</h2>
-          <div className="grid grid-cols-1 grid-cols-2 grid-cols-3">
+          <div className="grid">
             {recentlyViewed.map((item, index) => (
               <div key={index} className="card">
                 <Image
@@ -40,14 +40,14 @@ export default function Home() {
       <section className="section">
         <div className="container">
           <h2 className="section-title">Famous provinces</h2>
-          <div className="grid grid-cols-2 grid-cols-4">
+          <div className="grid grid-cols-4">
             {provinces.map((province, index) => (
               <div key={index} className="card">
                 <Image
                   src={province.image}
                   alt={province.name}
-                  width={300}
-                  height={200}
+                  width={800}
+                  height={450}
                   className="card-image"
                 />
                 <div className="card-content">
@@ -63,14 +63,14 @@ export default function Home() {
       <section className="section">
         <div className="container">
           <h2 className="section-title">Top Visions</h2>
-          <div className="grid grid-cols-2 grid-cols-4">
+          <div className="grid grid-cols-4">
             {topVisions.map((vision, index) => (
               <div key={index} className="card">
                 <Image
                   src={vision.image}
                   alt={vision.name}
-                  width={300}
-                  height={200}
+                  width={800}
+                  height={450}
                   className="card-image"
                 />
                 <div className="card-content">

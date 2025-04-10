@@ -41,6 +41,7 @@ const HeroSlider = () => {
       
       {/* Search Bar */}
       <div className="search-container">
+        <h1 className="hero-title">Аяллаа эхэл, дэлхий чамайг хүлээж байна.</h1>
         <div className="search-bar">
           <input
             type="text"
