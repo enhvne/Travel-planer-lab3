@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import "./style.css";
-import Wishlist from "../../pages/wishList/script";
+import Wishlist from "../../pages/wishList";
 import { useNavigate } from "react-router-dom";
 
 
