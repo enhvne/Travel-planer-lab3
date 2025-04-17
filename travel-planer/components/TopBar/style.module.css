@@ -5,23 +5,25 @@
     right: 0;
     background-color: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 50;
-  }
-  
-  .container {
+    z-index: 1000;
+    height: 70px;
+}
+
+.container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
-  }
-  
-  .topbarContent {
+    height: 100%;
+}
+
+.topbarContent {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 70px;
-  }
-  
-  .logo {
+}
+
+.logo {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -29,26 +31,26 @@
     color: var(--primary-color);
     font-weight: 600;
     font-size: 1.25rem;
-  }
-  
-  .navMenu {
+}
+
+.navMenu {
     display: flex;
     gap: 2rem;
-  }
-  
-  .navLink {
+}
+
+.navLink {
     text-decoration: none;
     color: #4B5563;
     font-weight: 500;
     transition: color 0.2s;
     position: relative;
-  }
-  
-  .navLink:hover {
+}
+
+.navLink:hover {
     color: var(--primary-color);
-  }
-  
-  .navLink:hover::after {
+}
+
+.navLink:hover::after {
     content: '';
     position: absolute;
     bottom: -4px;
@@ -58,15 +60,15 @@
     background-color: var(--primary-color);
     transform: scaleX(1);
     transition: transform 0.2s;
-  }
-  
-  .userActions {
+}
+
+.userActions {
     display: flex;
     align-items: center;
     gap: 1rem;
-  }
-  
-  .actionButton {
+}
+
+.actionButton {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,49 +79,49 @@
     border: none;
     cursor: pointer;
     transition: all 0.2s;
-  }
-  
-  .actionButton:hover {
+}
+
+.actionButton:hover {
     background-color: #F3F4F6;
     transform: scale(1.1);
-  }
-  
-  .menuButton {
+}
+
+.menuButton {
     display: none;
     background: none;
     border: none;
     padding: 0.5rem;
     cursor: pointer;
-  }
-  
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
     .navMenu {
-      position: fixed;
-      top: 70px;
-      left: 0;
-      right: 0;
-      background-color: white;
-      padding: 1rem;
-      flex-direction: column;
-      gap: 1rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transform: translateY(-100%);
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s ease;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: white;
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transform: translateY(-100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
     }
-  
+
     .navMenu.active {
-      transform: translateY(0);
-      opacity: 1;
-      pointer-events: auto;
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
     }
-  
+
     .menuButton {
-      display: block;
+        display: block;
     }
-  
+
     .navLink:hover::after {
-      display: none;
+        display: none;
     }
-  }
+}

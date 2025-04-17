@@ -4,6 +4,7 @@ import Image from "next/image";
 import TopBar from "../components/TopBar";
 import Footer from "../components/Footer";
 import HeroSlider from "../components/HeroSlider";
+import Searching from "../pages/searching";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -12,14 +13,18 @@ export default function Home() {
     <div className="page">
       <TopBar />
       <HeroSlider />
-
+      <Searching />
+        
       {/* Recently Viewed Section */}
       <section className="section recently-viewed">
         <div className="container">
           <h2 className="section-title">Recently viewed</h2>
           <div className="grid">
             {recentlyViewed.map((item, index) => (
-              <div key={index} className="card">
+              <div 
+              key={index} 
+              className="card"
+              onClick={() => router.push(`/searching`)}>
                 <Image
                   src={item.image}
                   alt={item.title}
@@ -76,7 +81,7 @@ export default function Home() {
               <div 
                 key={index} 
                 className="card"
-                onClick={() => router.push(`/visions/${province.id}`)}
+                onClick={() => router.push(`/famous/${province.id}`)}
                 >
                   <Image
                     src={province.image}
