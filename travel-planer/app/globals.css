@@ -30,7 +30,7 @@ body {
 }
 
 /* Header styles */
-.header {
+/* .header {
   position: absolute;
   top: 0;
   left: 0;
@@ -53,7 +53,7 @@ body {
   font-weight: 600;
   color: #1a1a1a;
   text-decoration: none;
-}
+} */
 
 
 /* Section styles */
@@ -102,6 +102,7 @@ body {
   border-radius: 1rem;
   overflow: hidden;
   aspect-ratio: 16/9;
+  box-shadow: 0 4px 12px rgba(11, 11, 11, 1);
 }
 
 .card-image {
@@ -135,84 +136,6 @@ body {
   margin-bottom: 0.25rem;
 }
 
-/* Footer styles */
-.footer {
-  background-color: black;
-  color: white;
-  padding: 2rem 0;
-}
-
-.footer-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.social-links {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.social-link {
-  opacity: 1;
-  transition: opacity 0.2s;
-}
-
-.social-link:hover {
-  opacity: 0.8;
-}
-
-.trustpilot {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.star-rating {
-  display: flex;
-  align-items: center;
-}
-
-.rating-text {
-  font-size: 0.875rem;
-}
-
-/* Navigation styles */
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.wishlist-link {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(4px);
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  text-decoration: none;
-}
-
-.wishlist-link span {
-  font-weight: 500;
-  color: #1a1a1a;
-}
-
-.user-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(4px);
-  padding: 0.5rem;
-  border-radius: 9999px;
-  border: none;
-  cursor: pointer;
-}
 
 @media (max-width: 1024px) {
   .card-content h3 {
@@ -222,13 +145,24 @@ body {
 
 /* Recently Viewed section */
 .recently-viewed .grid {
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
   gap: 1rem;
 }
 
+.recently-viewed .grid::-webkit-scrollbar {
+  display: none;
+}
+
 .recently-viewed .card {
+  position: relative;
+  min-width: 320px;
+  overflow: hidden;
   aspect-ratio: 5/3;
   border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(11, 11, 11, 1);
 }
 
 .recently-viewed .card-content {

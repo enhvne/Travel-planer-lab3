@@ -30,6 +30,7 @@ interface Place {
   image: string;
   title: string;
   rating: string;
+  isFavorite?: boolean;
 }
 
 const places: Place[] = [
@@ -37,55 +38,71 @@ const places: Place[] = [
     id: 1,
     image: '/images/image1.jpg',
     title: 'Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум',
-    rating: '5.0'
+    rating: '5.0',
+    isFavorite:  false,
   },
   {
     id: 2,
     image: '/images/image2.jpg',
     title: 'Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум',
-    rating: '5.0'
+    rating: '5.0',
+    isFavorite:  false,
   },
   {
     id: 3,
     image: '/images/image3.jpg',
     title: 'Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум',
-    rating: '5.0'
+    rating: '5.0',
+    isFavorite:  false,
   },
   {
     id: 4,
     image: '/images/image1.jpg',
     title: 'Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум',
-    rating: '5.0'
+    rating: '5.0',
+    isFavorite:  false,
   },
   {
     id: 5,
     image: '/images/image2.jpg',
     title: 'Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум',
-    rating: '5.0'
+    rating: '5.0',
+    isFavorite:  false,
   },
   {
     id: 6,
     image: '/images/image3.jpg',
     title: 'Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум',
-    rating: '5.0'
+    rating: '5.0',
+    isFavorite:  false,
   },
   {
     id: 7,
     image: '/images/image1.jpg',
     title: 'Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум',
-    rating: '5.0'
+    rating: '5.0',
+    isFavorite: false,
   },
   {
     id: 8,
-    image: '/images/image2.jpg',
+    image: '/images/image1.jpg',
     title: 'Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум',
-    rating: '5.0'
+    rating: '5.0',
+    isFavorite:  false,
   },
   {
     id: 9,
+    image: '/images/image2.jpg',
+    title: 'Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум',
+    rating: '5.0',
+    isFavorite:  false,
+  },
+  {
+    id: 10,
     image: '/images/image3.jpg',
     title: 'Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум',
-    rating: '5.0'
+    rating: '5.0',
+    isFavorite:  false,
   }
 ];
 
@@ -165,7 +182,7 @@ export default function SearchPage() {
             <div 
               key={place.id} 
               className={styles.resultCard}
-              onClick={() => router.push(`/place/${place.id}`)}
+              onClick={() => router.push(`/object`)}
             >
               <div className={styles.imageContainer}>
                 <Image
@@ -179,11 +196,11 @@ export default function SearchPage() {
                   className={`${styles.favoriteButton} ${isFavorite ? styles.favoriteActive : ''}`}
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent card click when clicking favorite button
-                    setIsFavorite(!isFavorite);
+                    setIsFavorite(place.isFavorite=!isFavorite);
                   }}
                 >
                   <Image
-                    src="/icons/heart.svg"
+                    src={place.isFavorite ? "/icons/green-heart.svg" : "/icons/heart.svg"}
                     alt="Favorite"
                     width={24}
                     height={24}

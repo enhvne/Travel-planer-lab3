@@ -16,10 +16,11 @@ export default function TopBar() {
           {/* Logo */}
           <Link href="/" className={styles.logo}>
             <Image
-              src="icons/heart.svg"
+              src="/icons/heart.svg"
               alt="Travel Planner"
               width={40}
               height={40}
+              priority
             />
             <span>Travel Planner</span>
           </Link>
@@ -29,7 +30,7 @@ export default function TopBar() {
             <Link href="/" className={styles.navLink}>
               Home
             </Link>
-            <Link href="/search" className={styles.navLink}>
+            <Link href="/searching" className={styles.navLink}>
               Destinations
             </Link>
             <Link href="/about" className={styles.navLink}>
@@ -42,12 +43,13 @@ export default function TopBar() {
 
           {/* User Actions */}
           <div className={styles.userActions}>
-            <Link href="/wishlist" className={styles.actionButton}>
+            <Link href="/wishList" className={styles.actionButton}>
               <Image
                 src="/icons/heart.svg"
                 alt="Favorites"
                 width={24}
                 height={24}
+                priority
               />
             </Link>
             <Link href="/profile" className={styles.actionButton}>
@@ -56,6 +58,7 @@ export default function TopBar() {
                 alt="Profile"
                 width={24}
                 height={24}
+                priority
               />
             </Link>
             
@@ -69,6 +72,7 @@ export default function TopBar() {
                 alt="Menu"
                 width={24}
                 height={24}
+                priority
               />
             </button>
           </div>

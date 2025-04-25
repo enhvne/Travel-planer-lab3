@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import Image from 'next/image';
+import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api';
 import TopBar from '../../components/TopBar';
 import Footer from '../../components/Footer';
 import styles from './style.module.css';
+import { mapStyles, retroStyle } from './mapStyles';
 
 interface Location {
   id: number;
@@ -12,6 +14,10 @@ interface Location {
   description: string;
   isCurrentLocation?: boolean;
   image?: string;
+  position: {
+    lat: number;
+    lng: number;
+  };
 }
 
 const locations: Location[] = [
@@ -19,37 +25,101 @@ const locations: Location[] = [
     id: 1,
     name: 'Chandmani (location you are)',
     description: '',
-    isCurrentLocation: true
+    isCurrentLocation: true,
+    position: {
+      lat: 47.8445,
+      lng: 92.7236
+    }
   },
   {
     id: 2,
     name: 'Erdenekhairhan',
     description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-    image: '/images/route1.jpg'
+    image: '',
+    position: {
+      lat: 47.3833,
+      lng: 92.4667
+    }
   },
   {
     id: 3,
     name: 'Buga',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?'
+    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
+    position: {
+      lat: 47.2167,
+      lng: 92.3000
+    }
   },
   {
     id: 4,
     name: 'Zavhanmandal',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?'
+    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
+    position: {
+      lat: 47.1500,
+      lng: 92.2500
+    }
   },
   {
     id: 5,
     name: 'Santmargats',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?'
+    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
+    position: {
+      lat: 47.0833,
+      lng: 92.1667
+    }
   },
   {
     id: 6,
     name: 'Tsetsen-Uul',
-    description: ''
+    description: '',
+    position: {
+      lat: 47.0167,
+      lng: 92.0833
+    }
   }
 ];
 
+const mapContainerStyle = {
+  width: '100%',
+  height: '600px'
+};
+
+const center = {
+  lat: 47.4306,
+  lng: 92.4028
+};
+
+const mapOptions = {
+  mapTypeId: 'terrain',
+  disableDefaultUI: true,
+  zoomControl: true,
+  styles: mapStyles,
+};
+
 export default function WishList() {
+  const [markerIcons, setMarkerIcons] = useState<{ [key: string]: any }>({});
+  const path = locations.map(location => location.position);
+
+  const onLoad = useCallback((map: any) => {
+    const bounds = new window.google.maps.LatLngBounds();
+    locations.forEach(location => bounds.extend(location.position));
+    map.fitBounds(bounds);
+
+    const icons = {
+      current: {
+        url: '/icons/blue-marker.svg',
+        scaledSize: new window.google.maps.Size(24, 36),
+        anchor: new window.google.maps.Point(12, 36)
+      },
+      default: {
+        url: '/icons/red-marker.svg',
+        scaledSize: new window.google.maps.Size(24, 36),
+        anchor: new window.google.maps.Point(12, 36)
+      }
+    };
+    setMarkerIcons(icons);
+  }, []);
+
   return (
     <div>
       <TopBar />
@@ -68,13 +138,31 @@ export default function WishList() {
               </div>
             </div>
             <div className={styles.mapContainer}>
-              <Image
-                src="/images/route-map.jpg"
-                alt="Travel route map"
-                width={800}
-                height={600}
-                className={styles.mapImage}
-              />
+              <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}>
+                <GoogleMap
+                  mapContainerStyle={mapContainerStyle}
+                  zoom={8}
+                  center={center}
+                  onLoad={onLoad}
+                  options={mapOptions}
+                >
+                  {locations.map((location) => (
+                    <Marker
+                      key={location.id}
+                      position={location.position}
+                      icon={markerIcons[location.isCurrentLocation ? 'current' : 'default']}
+                    />
+                  ))}
+                  <Polyline
+                    path={path}
+                    options={{
+                      strokeColor: '#E5E7EB',
+                      strokeOpacity: 1,
+                      strokeWeight: 2,
+                    }}
+                  />
+                </GoogleMap>
+              </LoadScript>
             </div>
           </div>
 
@@ -101,7 +189,7 @@ export default function WishList() {
                         alt={location.name}
                         width={400}
                         height={200}
-                        objectFit="cover"
+                        style={{ objectFit: 'cover' }}
                       />
                     </div>
                   )}

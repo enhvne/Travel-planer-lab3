@@ -193,9 +193,9 @@
     filter: invert(40%) sepia(70%) saturate(800%) hue-rotate(70deg) brightness(100%) contrast(95%);
   }
   
-  .favoriteActive {
-    background-color: pink;
-    color: red;
+  .favoriteActive path {
+    stroke: green;
+    color: rgb(4, 255, 0);
   }
   .cardContent {
     padding: 1.25rem;
