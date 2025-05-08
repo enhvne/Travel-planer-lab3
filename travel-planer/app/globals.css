@@ -29,32 +29,6 @@ body {
   padding: 0 1rem;
 }
 
-/* Header styles */
-/* .header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  padding: 1rem 0;
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(4px);
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  font-weight: 600;
-  color: #1a1a1a;
-  text-decoration: none;
-} */
-
 
 /* Section styles */
 .section {

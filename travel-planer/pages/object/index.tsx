@@ -1,5 +1,5 @@
 'use client';
-
+import '../../app/globals.css';
 import React, { useState } from 'react';
 import Image from 'next/image';
 import TopBar from '../../components/TopBar';

@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './style.module.css';
+import '../../app/globals.css';
 import TopBar from '../../components/TopBar';
 import Footer from '../../components/Footer';
 

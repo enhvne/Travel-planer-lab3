@@ -6,6 +6,7 @@ import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api'
 import TopBar from '../../components/TopBar';
 import Footer from '../../components/Footer';
 import styles from './style.module.css';
+import '../../app/globals.css';
 import { mapStyles, retroStyle } from './mapStyles';
 
 interface Location {
