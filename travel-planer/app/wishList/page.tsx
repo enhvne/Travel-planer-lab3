@@ -1,206 +1,126 @@
-'use client';
+'use client'
 
-import React, { useCallback, useState, useEffect } from 'react';
-import Image from 'next/image';
-import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api';
-import TopBar from '../../components/TopBar';
-import Footer from '../../components/Footer';
-import styles from './style.module.css';
-import '../../app/globals.css';
-import { mapStyles, retroStyle } from './mapStyles';
+import { useRouter } from 'next/navigation';
+import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
+import styles from "./style.module.css";
+import TopBar from '@/components/TopBar';
+import Footer from '@/components/Footer';
+import '../globals.css';
 
-interface Location {
-  id: number;
-  name: string;
-  description: string;
-  isCurrentLocation?: boolean;
-  image?: string;
-  position: {
-    lat: number;
-    lng: number;
-  };
+interface WishListItem{
+    id: number;
+    name: string;
+    
 }
-
-const locations: Location[] = [
-  {
-    id: 1,
-    name: 'Chandmani (location you are)',
-    description: '',
-    isCurrentLocation: true,
-    position: {
-      lat: 47.8445,
-      lng: 92.7236
-    }
-  },
-  {
-    id: 2,
-    name: 'Erdenekhairhan',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-    image: '',
-    position: {
-      lat: 47.3833,
-      lng: 92.4667
-    }
-  },
-  {
-    id: 3,
-    name: 'Buga',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-    position: {
-      lat: 47.2167,
-      lng: 92.3000
-    }
-  },
-  {
-    id: 4,
-    name: 'Zavhanmandal',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-    position: {
-      lat: 47.1500,
-      lng: 92.2500
-    }
-  },
-  {
-    id: 5,
-    name: 'Santmargats',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-    position: {
-      lat: 47.0833,
-      lng: 92.1667
-    }
-  },
-  {
-    id: 6,
-    name: 'Tsetsen-Uul',
-    description: '',
-    position: {
-      lat: 47.0167,
-      lng: 92.0833
-    }
-  }
-];
-
-const mapContainerStyle = {
-  width: '100%',
-  height: '600px'
-};
-
-const center = {
-  lat: 47.4306,
-  lng: 92.4028
-};
-
-const mapOptions = {
-  mapTypeId: 'terrain',
-  disableDefaultUI: true,
-  zoomControl: true,
-  styles: mapStyles,
-};
-
+const WishListItems: WishListItem[] = [
+    { id: 1, name: 'Wishlist 1' },
+    { id: 2, name: 'Wishlist 2' },
+    { id: 3, name: 'Wishlist 3' },
+]
 export default function WishList() {
-  const [markerIcons, setMarkerIcons] = useState<{ [key: string]: any }>({});
-  const path = locations.map(location => location.position);
+    const router = useRouter()
+    const [wishlists, setWishlists] = useState<WishListItem[]>(WishListItems);
+    const [selectedId, setSelectedId] = useState<number | null>(null);
+    const sidebarRef = useRef<HTMLDivElement | null>(null);
 
-  const onLoad = useCallback((map: any) => {
-    const bounds = new window.google.maps.LatLngBounds();
-    locations.forEach(location => bounds.extend(location.position));
-    map.fitBounds(bounds);
+    // Close sidebar when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                sidebarRef.current &&
+                !sidebarRef.current.contains(event.target as Node)
+            ) {
+                setSelectedId(null);
+            }
+        };
+    
+        if (selectedId !== null) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+    
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [selectedId]);
+    
 
-    const icons = {
-      current: {
-        url: '/icons/blue-marker.svg',
-        scaledSize: new window.google.maps.Size(24, 36),
-        anchor: new window.google.maps.Point(12, 36)
-      },
-      default: {
-        url: '/icons/red-marker.svg',
-        scaledSize: new window.google.maps.Size(24, 36),
-        anchor: new window.google.maps.Point(12, 36)
-      }
+    const clickBtn = (): void => {
+        const name = window.prompt("Enter wishlist name:");
+        if (!name || !name.trim()) return;
+        const newList: WishListItem = {
+            id: Date.now(),
+            name: name.trim()
+        };
+        setWishlists([...wishlists, newList]);
     };
-    setMarkerIcons(icons);
-  }, []);
 
-  return (
-    <div>
-      <TopBar />
-      <main className={styles.main}>
-        <div className={styles.routeContainer}>
-          <div className={styles.mapSection}>
-            <div className={styles.mapHeader}>
-              <h1>Your Travel Route</h1>
-              <div className={styles.sortBy}>
-                <span>Sort by:</span>
-                <select>
-                  <option value="date">Date</option>
-                  <option value="distance">Distance</option>
-                  <option value="popularity">Popularity</option>
-                </select>
-              </div>
-            </div>
-            <div className={styles.mapContainer}>
-              <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}>
-                <GoogleMap
-                  mapContainerStyle={mapContainerStyle}
-                  zoom={8}
-                  center={center}
-                  onLoad={onLoad}
-                  options={mapOptions}
-                >
-                  {locations.map((location) => (
-                    <Marker
-                      key={location.id}
-                      position={location.position}
-                      icon={markerIcons[location.isCurrentLocation ? 'current' : 'default']}
-                    />
-                  ))}
-                  <Polyline
-                    path={path}
-                    options={{
-                      strokeColor: '#E5E7EB',
-                      strokeOpacity: 1,
-                      strokeWeight: 2,
-                    }}
-                  />
-                </GoogleMap>
-              </LoadScript>
-            </div>
-          </div>
+    const deleteWishlist = (id: number, e: React.MouseEvent) => {
+        e.stopPropagation(); // prevent navigation
+        setWishlists(wishlists.filter(wish => wish.id !== id));
+    };
 
-          <div className={styles.locationsList}>
-            {locations.map((location, index) => (
-              <div key={location.id} className={styles.locationItem}>
-                <div className={styles.locationMarker}>
-                  <div className={`${styles.marker} ${location.isCurrentLocation ? styles.currentMarker : ''}`}>
-                    {location.isCurrentLocation ? (
-                      <div className={styles.blueMarker} />
-                    ) : (
-                      <div className={styles.redMarker} />
-                    )}
-                  </div>
-                  {index < locations.length - 1 && <div className={styles.markerLine} />}
-                </div>
-                <div className={styles.locationContent}>
-                  <h3>{location.name}</h3>
-                  {location.description && <p>{location.description}</p>}
-                  {location.image && (
-                    <div className={styles.locationImage}>
-                      <Image
-                        src={location.image}
-                        alt={location.name}
-                        width={400}
-                        height={200}
-                        style={{ objectFit: 'cover' }}
-                      />
+    return (
+        <div>
+            <TopBar />
+            <div className={styles.wishList}>
+                <h1>WishList</h1>
+                <div className={styles.container}>
+                    {/* <div className={styles.main}> */}
+                        <button 
+                            className={styles.addBtn}
+                            onClick={clickBtn}
+                        >
+                            <Image
+                                src="/images/add-icon.png"
+                                alt="add"
+                                width={200}
+                                height={200}
+                                className= {styles.card_image}
+                            />
+                            <p>New wishlist</p>
+                        </button>
+
+                        {wishlists.map(wish => (
+                            <button 
+                                key={wish.id} 
+                                className={styles.card}
+                                onClick={() => setSelectedId(wish.id!)}
+                            >
+                                <Image
+                                    src="/images/add-icon.png"
+                                    alt= {wish.name}
+                                    width={200}
+                                    height={200}
+                                    className= {styles.card_image}
+                                />
+                                <p>{wish.name}</p>
+
+                                <button
+                                    className={styles.deleteBtn}
+                                    onClick={(e) => deleteWishlist(wish.id, e)}
+                                >x</button>
+                            </button>
+                        ))}
+                    {/* </div> */}
+                    
+                    {selectedId && (
+                    <div className={styles.rightSidebar} ref={sidebarRef}>
+                        <h2 className={styles.fixedHeader}>
+                            {wishlists.find(w => w.id === selectedId)?.name ?? "Wishlist"}
+                        </h2>
+                        <div className={styles.scrollableContent}>
+                            {Array.from({ length: 30 }).map((_, i) => (
+                            <p key={i} >
+                                {wishlists.find(w => w.id === selectedId)?.name ?? 'No name'}
+                            </p>
+                            ))}
+                        </div>
                     </div>
-                  )}
+                    )}
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </main>
-      <Footer />
-    </div>
-  );
+            </div>
+            <Footer />
+        </div> 
+    );
 }

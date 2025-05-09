@@ -30,9 +30,9 @@ export default function TopBar() {
             <Link href="/" className={styles.navLink}>
               Home
             </Link>
-            <Link href="/searching" className={styles.navLink}>
+            {/* <Link href="/searching" className={styles.navLink}>
               Destinations
-            </Link>
+            </Link> */}
             <Link href="/about" className={styles.navLink}>
               About Us
             </Link>
@@ -46,6 +46,15 @@ export default function TopBar() {
             <Link href="/wishList" className={styles.actionButton}>
               <Image
                 src="/icons/heart.svg"
+                alt="Favorites"
+                width={24}
+                height={24}
+                priority
+              />
+            </Link>
+            <Link href="/plans" className={styles.actionButton}>
+              <Image
+                src="/icons/topbar/plans.svg"
                 alt="Favorites"
                 width={24}
                 height={24}

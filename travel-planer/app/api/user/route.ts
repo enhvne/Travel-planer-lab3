@@ -1,41 +1,47 @@
-// pages/api/user.js
-import { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server'
 
-export default function handler(req, res) {
+// Mock user data
+const mockUser = {
+  name: 'John Doe',
+  email: 'john.doe@example.com',
+  avatar: '/images/profile.png',
+  joinedDate: 'January 2024',
+  savedTours: 12,
+  completedTours: 5,
+}
 
-  const user = {
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      avatar: '/images/profile.png',
-      joinedDate: 'January 2024',
-      savedTours: 12,
-      completedTours: 5,
-  };
+// GET handler
+export async function GET() {
+  return NextResponse.json(mockUser)
+}
 
-  if (req.method === 'GET'){
-    res.status(200).json(user);
-
-  } else if (req.method === 'POST') {
-
-    const { name, email } = req.body;
+// POST handler
+export async function POST(req: Request) {
+  try {
+    const { name, email } = await req.json()
 
     if (!name || !email) {
-      return res.status(400).json({ error: 'Name and email are required' });
+      return NextResponse.json({ error: 'Name and email are required' }, { status: 400 })
     }
 
-    res.status(201).json({
-      message: 'User created successfully',
-      user: {
-        name,
-        email,
-        avatar: '/images/default.png',
-        joinedDate: 'May 2025',
-        savedTours: 0,
-        completedTours: 0,
+    const newUser = {
+      name,
+      email,
+      avatar: '/images/default.png',
+      joinedDate: 'May 2025',
+      savedTours: 0,
+      completedTours: 0,
+    }
+
+    return NextResponse.json(
+      {
+        message: 'User created successfully',
+        user: newUser,
       },
-    });
-  } else {
-    res.status(405).json({ error: 'Method Not Allowed' });
+      { status: 201 }
+    )
+  } catch (error) {
+    console.error('Error in POST /api/user:', error)
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
-  
