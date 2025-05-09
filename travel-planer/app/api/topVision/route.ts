@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 
 let topVisions = [
     { id: 1, name: "Altai Tavan Bogd", image: "/images/visions/tavanBogd.jpg" },
@@ -10,12 +11,6 @@ let topVisions = [
     { id: 8, name: "Khetsuu rock", image: "/images/visions/khetsuu.jpg" }
 ];
 
-export default function GET(req, res) {
-
-    if (req.method === "GET") {
-        res.status(200).json(topVisions);
-    } else {
-        res.setHeader("Allow", ["GET"]);
-        res.status(405).end(`Method ${req.method} Not Allowed`);
-    }
-};
+export async function GET(){
+    return NextResponse.json(topVisions);
+}

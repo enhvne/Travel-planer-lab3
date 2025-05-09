@@ -16,22 +16,22 @@ export async function GET() {
   return NextResponse.json(provinces);
 }
 
-// POST method
-export async function POST(req: Request) {
-  const body = await req.json();
-  const { name, image } = body;
+// // POST method
+// export async function POST(req: Request) {
+//   const body = await req.json();
+//   const { name, image } = body;
 
-  if (!name || !image) {
-    return NextResponse.json({ error: 'name and image required' }, { status: 400 });
-  }
+//   if (!name || !image) {
+//     return NextResponse.json({ error: 'name and image required' }, { status: 400 });
+//   }
 
-  const newProvince = {
-    id: provinces.length + 1,
-    name,
-    image
-  };
+//   const newProvince = {
+//     id: provinces.length + 1,
+//     name,
+//     image
+//   };
 
-  provinces.push(newProvince);
+//   provinces.push(newProvince);
 
-  return NextResponse.json(newProvince, { status: 201 });
-}
+//   return NextResponse.json(newProvince, { status: 201 });
+// }
