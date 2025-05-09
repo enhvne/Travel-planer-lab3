@@ -16,20 +16,22 @@ export default function FamousProvince(){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(()=>{
-        const fetchProvinces = async ()=>{
-            try{
-                const response = await fetch('@/lib/api/famousProvince');
-                const data = await response.json();
-                setProvinces(data);
-            } catch (err){
-                setError(err instanceof Error ? err.message : 'An error occurred')
-            } finally{
-                setLoading(false);
-            }
+    useEffect(() => {
+        const fetchProvinces = async () => {
+          try {
+            const response = await fetch('/api/famousProvince'); // ✔ зөв зам
+            const data = await response.json();
+            setProvinces(data);
+          } catch (err) {
+            setError(err instanceof Error ? err.message : 'Error occurred');
+          } finally {
+            setLoading(false);
+          }
         };
+      
         fetchProvinces();
-    }, []);
+      }, []);
+      
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
