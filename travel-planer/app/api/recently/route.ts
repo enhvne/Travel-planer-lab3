@@ -1,4 +1,5 @@
-// Mock data for recently viewed items
+import { NextResponse } from 'next/server'
+
 let recentlyViewed = [
     {
         id: 1,
@@ -37,66 +38,58 @@ let recentlyViewed = [
     }
 ];
 
-export default function handler(req, res) {
-    if (req.method === 'GET') {
-        // Return recently viewed items sorted by viewedAt
-        const sortedItems = [...recentlyViewed].sort((a, b) => 
-            new Date(b.viewedAt) - new Date(a.viewedAt)
-        );
-        res.status(200).json(sortedItems);
-    } 
-    else if (req.method === 'POST') {
-        try {
-            const { image, title, rating } = req.body;
-
-            // Validate required fields
-            if (!image || !title || !rating) {
-                return res.status(400).json({ 
-                    error: 'Image, title, and rating are required' 
-                });
-            }
-
-            // Create new recently viewed item
-            const newItem = {
-                id: recentlyViewed.length + 1,
-                image,
-                title,
-                rating,
-                viewedAt: new Date().toISOString()
-            };
-
-            // Add to beginning of array
-            recentlyViewed.unshift(newItem);
-
-            // Keep only last 10 items
-            if (recentlyViewed.length > 10) {
-                recentlyViewed = recentlyViewed.slice(0, 10);
-            }
-
-            res.status(201).json(newItem);
-        } catch (error) {
-            console.error('Error adding recently viewed item:', error);
-            res.status(500).json({ error: 'Failed to add recently viewed item' });
-        }
+// GET - get all recently viewed
+export async function GET() {
+    const sortedItems = [...recentlyViewed].sort(
+      (a, b) => new Date(b.viewedAt).getTime() - new Date(a.viewedAt).getTime()
+    );
+    return NextResponse.json(sortedItems);
+  }
+  
+  // POST - add new recently viewed item
+  export async function POST(req: Request) {
+    try {
+      const { image, title, rating } = await req.json();
+  
+      if (!image || !title || !rating) {
+        return NextResponse.json({ error: 'Image, title, and rating are required' }, { status: 400 });
+      }
+  
+      const newItem = {
+        id: recentlyViewed.length + 1,
+        image,
+        title,
+        rating,
+        viewedAt: new Date().toISOString()
+      };
+  
+      recentlyViewed.unshift(newItem);
+      if (recentlyViewed.length > 10) {
+        recentlyViewed = recentlyViewed.slice(0, 10);
+      }
+  
+      return NextResponse.json(newItem, { status: 201 });
+    } catch (error) {
+      console.error('Error adding recently viewed item:', error);
+      return NextResponse.json({ error: 'Failed to add recently viewed item' }, { status: 500 });
     }
-    else if (req.method === 'DELETE') {
-        try {
-            const { id } = req.query;
-
-            if (!id) {
-                return res.status(400).json({ error: 'Item ID is required' });
-            }
-
-            // Remove item from array
-            recentlyViewed = recentlyViewed.filter(item => item.id !== parseInt(id));
-
-            res.status(200).json({ message: 'Item removed successfully' });
-        } catch (error) {
-            console.error('Error removing recently viewed item:', error);
-            res.status(500).json({ error: 'Failed to remove recently viewed item' });
-        }
+  }
+  
+  // DELETE - remove item by id
+  export async function DELETE(req: Request) {
+    try {
+      const { searchParams } = new URL(req.url);
+      const id = searchParams.get('id');
+  
+      if (!id) {
+        return NextResponse.json({ error: 'Item ID is required' }, { status: 400 });
+      }
+  
+      recentlyViewed = recentlyViewed.filter(item => item.id !== parseInt(id));
+  
+      return NextResponse.json({ message: 'Item removed successfully' });
+    } catch (error) {
+      console.error('Error removing recently viewed item:', error);
+      return NextResponse.json({ error: 'Failed to remove recently viewed item' }, { status: 500 });
     }
-    else {
-        res.status(405).json({ error: 'Method Not Allowed' });
-    }
-}
+  }
