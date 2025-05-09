@@ -15,7 +15,7 @@ export default function TopVisions(){
    useEffect(()=> {
      const fetchVisions = async () => {
        try{
-         const response = await fetch('api/topVision');
+         const response = await fetch('lib/api/topVision');
          const data = response.json();
          // json-oor irsen ogogdliig data-d ogj tuuniigee setTopVisions-aar damjuulan topVisions-d hiin
          setTopVisions(data);
@@ -25,7 +25,7 @@ export default function TopVisions(){
        } finally {
          setLoading(false);
        }
-     };fetchVisions();
+     }
    }, []);
    
    return(

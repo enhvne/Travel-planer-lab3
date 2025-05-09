@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
+
 interface province{
     id: number,
     name: string,
@@ -18,7 +19,7 @@ export default function FamousProvince(){
     useEffect(()=>{
         const fetchProvinces = async ()=>{
             try{
-                const response = await fetch('api/famousProvince');
+                const response = await fetch('@/lib/api/famousProvince');
                 const data = await response.json();
                 setProvinces(data);
             } catch (err){
