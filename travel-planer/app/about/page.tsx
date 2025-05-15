@@ -35,7 +35,7 @@ export default function AboutUs() {
                                 height={200}
                                 className={styles.memberImage}
                             />
-                            <h3>John Doe</h3>
+                            <h3>М.Төгсбилэг</h3>
                             <p>Founder & CEO</p>
                         </div>
                         <div className={styles.teamMember}>
@@ -46,8 +46,8 @@ export default function AboutUs() {
                                 height={200}
                                 className={styles.memberImage}
                             />
-                            <h3>Jane Smith</h3>
-                            <p>Travel Expert</p>
+                            <h3>Б.Эрдэнэ-очир</h3>
+                            <p>Founder & CEO</p>
                         </div>
                         <div className={styles.teamMember}>
                             <Image
@@ -57,8 +57,8 @@ export default function AboutUs() {
                                 height={200}
                                 className={styles.memberImage}
                             />
-                            <h3>Mike Johnson</h3>
-                            <p>Local Guide</p>
+                            <h3>Энхмэнд</h3>
+                            <p>Founder & CEO</p>
                         </div>
                     </div>
                 </section>
