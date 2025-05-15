@@ -144,6 +144,55 @@
   margin-top: 1rem;
 }
 
+.hotelInfo {
+  overflow: visible;
+  margin-top: 1.5rem;
+}
+
+.hotels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  overflow-x: hidden;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.hotel {
+  background: #f9fafb;
+  border-radius: 12px;
+  overflow-x: hidden;
+
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+
+
+.hotelImage {
+  background-color: #d1d5db;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.hotelDetails {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.stars {
+  margin-top: 0.5rem;
+  background-color: #e5e7eb;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  display: inline-block;
+}
+
 @media (max-width: 768px) {
   .main {
     padding: 5rem 1rem 2rem;

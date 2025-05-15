@@ -19,6 +19,13 @@ interface Location {
     lat: number;
     lng: number;
   };
+  hotels?: {
+    name: string;
+    distance: string;
+    price: string;
+    location: string;
+    rating: number;
+  }[];
 }
 
 const locations: Location[] = [
@@ -40,7 +47,51 @@ const locations: Location[] = [
     position: {
       lat: 47.3833,
       lng: 92.4667
-    }
+    },
+    hotels: [
+      {
+        name: 'Erdene Guesthouse',
+        distance: '500m from center',
+        price: '$30/night',
+        location: 'fsf',
+        rating: 5,
+      },
+      {
+        name: 'Khairkhan Hotel',
+        distance: '700m from center',
+        price: '$45/night',
+        location: 'fsf',
+        rating: 5,
+      },
+      {
+        name: 'Khairkhan Hotel',
+        distance: '700m from center',
+        price: '$45/night',
+        location: 'fsf',
+        rating: 5,
+      },
+      {
+        name: 'Khairkhan Hotel',
+        distance: '700m from center',
+        price: '$45/night',
+        location: 'fsf',
+        rating: 5,
+      },
+      {
+        name: 'Khairkhan Hotel',
+        distance: '700m from center',
+        price: '$45/night',
+        location: 'fsf',
+        rating: 5,
+      },
+      {
+        name: 'Khairkhan Hotel',
+        distance: '700m from center',
+        price: '$45/night',
+        location: 'fsf',
+        rating: 5,
+      }
+    ]
   },
   {
     id: 3,
@@ -72,7 +123,7 @@ const locations: Location[] = [
   {
     id: 6,
     name: 'Tsetsen-Uul',
-    description: '',
+    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
     position: {
       lat: 47.0167,
       lng: 92.0833
@@ -194,6 +245,29 @@ export default function WishList() {
                       />
                     </div>
                   )}
+                  {location.hotels && location.hotels.length > 0 && (
+                    <div className={styles.hotelInfo}>
+                      <h4>Nearby Hotels</h4>
+                      <div className={styles.hotels}>
+                        {location.hotels.map((hotel, i) => (
+                          <div key={i} className={styles.hotel}>
+                            <div className={styles.hotelImage}>
+                              <span>buudliin zurag</span>
+                            </div>
+                            <div className={styles.hotelDetails}>
+                              <p><strong>Zochil buudel</strong></p>
+                              <p>location {hotel.location}</p>
+                              <p>{hotel.price} per night</p>
+                              <div className={styles.stars}>
+                                🌟 {hotel.rating} stars
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                 </div>
               </div>
             ))}
