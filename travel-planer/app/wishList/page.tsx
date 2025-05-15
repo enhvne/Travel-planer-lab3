@@ -13,16 +13,30 @@ interface WishListItem{
     name: string;
     
 }
-const WishListItems: WishListItem[] = [
-    { id: 1, name: 'Wishlist 1' },
-    { id: 2, name: 'Wishlist 2' },
-    { id: 3, name: 'Wishlist 3' },
-]
+
 export default function WishList() {
     const router = useRouter()
-    const [wishlists, setWishlists] = useState<WishListItem[]>(WishListItems);
+    const [wishlists, setWishlists] = useState<WishListItem[]>([]);
     const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const sidebarRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const fetchWishList = async () =>{
+            try{
+                const response = await fetch('/api/wishList');
+                const data = await response.json();
+                setWishlists(data);
+            } catch (err){
+                setError(err instanceof Error ? err.message : 'Error occurred');
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchWishList();
+
+    }, []);
 
     // Close sidebar when clicking outside
     useEffect(() => {
@@ -59,7 +73,9 @@ export default function WishList() {
         e.stopPropagation(); // prevent navigation
         setWishlists(wishlists.filter(wish => wish.id !== id));
     };
-
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+    
     return (
         <div>
             <TopBar />

@@ -77,20 +77,7 @@ const locations: Location[] = [
         location: 'fsf',
         rating: 5,
       },
-      {
-        name: 'Khairkhan Hotel',
-        distance: '700m from center',
-        price: '$45/night',
-        location: 'fsf',
-        rating: 5,
-      },
-      {
-        name: 'Khairkhan Hotel',
-        distance: '700m from center',
-        price: '$45/night',
-        location: 'fsf',
-        rating: 5,
-      }
+      
     ]
   },
   {
@@ -181,7 +168,7 @@ export default function WishList() {
             <div className={styles.mapHeader}>
               <h1>Your Travel Route</h1>
               <div className={styles.sortBy}>
-                <span>Sort by:</span>
+                <span>Lists:</span>
                 <select>
                   <option value="date">Date</option>
                   <option value="distance">Distance</option>
