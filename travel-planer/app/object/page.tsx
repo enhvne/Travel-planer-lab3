@@ -6,6 +6,8 @@ import TopBar from '../../components/TopBar';
 import Footer from '../../components/Footer';
 import styles from './style.module.css';
 
+
+
 interface Comment {
   id: number;
   rating: number;
@@ -13,7 +15,10 @@ interface Comment {
   author: string;
   date: string;
 }
-
+interface Object{
+  commnt: Comment[];
+  title: string;
+}
 const comments: Comment[] = [
   {
     id: 1,
