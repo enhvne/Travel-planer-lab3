@@ -9,6 +9,7 @@ export interface User {
     wishList: Destination[] | null,
     comments: Comment[] | null,
     isPro: boolean,
+    recently: Destination[] | null,
 }
 
 export interface Comment {
