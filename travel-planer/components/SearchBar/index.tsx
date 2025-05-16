@@ -29,22 +29,32 @@ const provinces = [
   "Хэнтий"
 ];
 
+const categories = [
+  "Hiking",
+  "Walking",
+  "Biking",
+  "Climbing",
+]
+
 export default function SearchBar() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchQueryType, setSearchQueryType] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [showSuggestionsType, setShowSuggestionsType] = useState(false);
 
-  const filteredProvinces = provinces.filter(province =>
+
+  const filteredPrvince = provinces.filter(province =>
     province.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  const filteredCategory = categories.filter(category =>
+    category.toLowerCase().includes(searchQueryType.toLowerCase())
   );
 
   const handleSearch = () => {
     const searchParams = new URLSearchParams();
     if (searchQuery) searchParams.set('location', searchQuery);
-    if (startDate) searchParams.set('startDate', startDate);
-    if (endDate) searchParams.set('endDate', endDate);
+    if (searchQueryType) searchParams.set('type', searchQueryType);
     
     router.push(`/pages/search?${searchParams.toString()}`);
   };
@@ -72,7 +82,7 @@ export default function SearchBar() {
           />
           {showSuggestions && searchQuery && (
             <div className={styles.suggestionsDropdown}>
-              {filteredProvinces.map((province, index) => (
+              {filteredPrvince.map((province, index) => (
                 <div
                   key={index}
                   className={styles.suggestionItem}
@@ -90,12 +100,35 @@ export default function SearchBar() {
         
         <div className={styles.searchInputContainer}>
           <input
-            type="date"
-            placeholder="End date"
-            className={styles.searchInput}
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
+              type="text"
+              placeholder="What type"
+              className={styles.searchInput}
+              value={searchQueryType}
+              onChange={(e) => {
+                setSearchQueryType(e.target.value);
+                setShowSuggestionsType(true);
+              }}
+              onFocus={() => setShowSuggestionsType(true)}
+              onBlur={() => {
+                setTimeout(() => setShowSuggestionsType(false), 200);
+              }}
+            />
+            {showSuggestionsType && searchQueryType && (
+              <div className={styles.suggestionsDropdown}>
+                {filteredCategory.map((category, index) => (
+                  <div
+                    key={index}
+                    className={styles.suggestionItem}
+                    onClick={() => {
+                      setSearchQueryType(category);
+                      setShowSuggestionsType(false);
+                    }}
+                  >
+                    {category}
+                  </div>
+                ))}
+              </div>
+            )}
         </div>
         <button className={styles.searchButton} onClick={handleSearch}>
           <Image src="/icons/search.svg" alt="Search" width={24} height={24} />

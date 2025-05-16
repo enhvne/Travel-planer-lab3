@@ -2,6 +2,7 @@ export interface User {
     id: number,
     name: string,
     image: string,
+    position: string,
     username: string,
     email: string,
     password: string,
@@ -35,7 +36,6 @@ export interface Destination { //object
 export interface Category {
     id: number,
     name: string,
-
 }
 
 export interface Hotel {
@@ -44,4 +44,9 @@ export interface Hotel {
     distance: number,
     price: number,
     rating: number,
+}
+
+export interface Province{
+    id: number,
+    name: string,
 }
