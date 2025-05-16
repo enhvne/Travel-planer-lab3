@@ -5,27 +5,27 @@ import styles from './style.module.css';
 import '../../app/globals.css';
 import TopBar from '@/components/TopBar';
 
-export default function AboutUs() {
+export default function AboutUs() {AboutUs
     return (
         <div>
             <TopBar />
             <br/>
             <div className={styles.aboutContainer}>
                 <div className={styles.hero}>
-                    <h1>About Us</h1>
-                    <p>Discover Mongolia's beauty with us</p>
+                    <h1>Бидний тухай</h1>
+                    <p>Монголынхоо сайхныг бидэнтэй хамт олж мэдээрэй</p>
                 </div>
 
                 <section className={styles.mission}>
-                    <h2>Our Mission</h2>
+                    <h2>Бидний эрхэм зорилго</h2>
                     <p>
-                        We are dedicated to showcasing the breathtaking landscapes and rich cultural heritage of Mongolia. 
-                        Our goal is to provide unforgettable travel experiences while promoting sustainable tourism.
+                        Бид Монголын байгалийн үзэсгэлэнт газар нутаг, соёлын баялаг өвийг харуулахыг зорьдог. 
+                        Бидний зорилго бол тогтвортой аялал жуулчлалыг дэмжихийн зэрэгцээ мартагдашгүй аялалын туршлагыг бий болгох явдал юм.
                     </p>
                 </section>
 
                 <section className={styles.team}>
-                    <h2>Our Team</h2>
+                    <h2>Манай баг</h2>
                     <div className={styles.teamGrid}>
                         <div className={styles.teamMember}>
                             <Image
@@ -64,19 +64,19 @@ export default function AboutUs() {
                 </section>
 
                 <section className={styles.values}>
-                    <h2>Our Values</h2>
+                    <h2>Бидний үнэт зүйлс</h2>
                     <div className={styles.valuesGrid}>
                         <div className={styles.valueCard}>
-                            <h3>Sustainability</h3>
-                            <p>We are committed to eco-friendly tourism practices that preserve Mongolia's natural beauty.</p>
+                            <h3>Тогтвортой байдал</h3>
+                            <p>Бид Монголын байгалийн үзэсгэлэнт газруудыг хадгалан үлдээсэн байгальд ээлтэй аялал жуулчлалын арга барилыг эрхэмлэдэг.</p>
                         </div>
                         <div className={styles.valueCard}>
-                            <h3>Authenticity</h3>
-                            <p>We provide genuine experiences that showcase the real Mongolia and its culture.</p>
+                            <h3>Жинхэнэ байдал</h3>
+                            <p>Бид жинхэнэ Монгол улс, түүний соёлыг харуулсан жинхэнэ туршлагаар хангадаг.</p>
                         </div>
                         <div className={styles.valueCard}>
-                            <h3>Excellence</h3>
-                            <p>We strive for excellence in every aspect of our service and customer experience.</p>
+                            <h3>Давуу чанар</h3>
+                            <p>Бид үйлчилгээ, үйлчлүүлэгчдийнхээ туршлагыг бүх талаараа шилдэг байхыг эрмэлздэг.</p>
                         </div>
                     </div>
                 </section>
