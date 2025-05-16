@@ -5,16 +5,17 @@ import styles from './style.module.css';
 import '../../app/globals.css';
 import TopBar from '@/components/TopBar';
 import { FaUser, FaCog, FaHistory, FaHeart, FaSignOutAlt, FaEdit, FaComment, FaKey } from 'react-icons/fa';
+import { User } from '@/models/model';
 
-interface User {
-  avatar: string;
-  name: string;
-  email: string;
-  joinedDate: string;
-  savedTours: number;
-  completedTours: number;
-  role: 'user' | 'admin';
-}
+// interface User {
+//   avatar: string;
+//   name: string;
+//   email: string;
+//   joinedDate: string;
+//   savedTours: number;
+//   completedTours: number;
+//   role: 'user' | 'admin';
+// }
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('info');
@@ -81,7 +82,7 @@ const ProfilePage = () => {
           <div className={styles.infoSection}>
             <div className={styles.avatarContainer}>
               <Image
-                src={user.avatar}
+                src={user.image}
                 alt={user.name}
                 width={120}
                 height={120}
@@ -123,7 +124,7 @@ const ProfilePage = () => {
                 <>
                   <h2>{user.name}</h2>
                   <p>{user.email}</p>
-                  <p>Member since {user.joinedDate}</p>
+                  {/* <p>Member since {user.joinedDate}</p> */}
                   <button onClick={handleEdit} className={styles.editButton}>
                     <FaEdit /> Edit Profile
                   </button>
@@ -132,11 +133,11 @@ const ProfilePage = () => {
             </div>
             <div className={styles.stats}>
               <div className={styles.statItem}>
-                <span className={styles.statNumber}>{user.savedTours}</span>
+                {/* <span className={styles.statNumber}>{user.savedTours}</span> */}
                 <span className={styles.statLabel}>Saved Tours</span>
               </div>
               <div className={styles.statItem}>
-                <span className={styles.statNumber}>{user.completedTours}</span>
+                {/* <span className={styles.statNumber}>{user.completedTours}</span>  */}
                 <span className={styles.statLabel}>Completed Tours</span>
               </div>
             </div>
@@ -198,7 +199,7 @@ const ProfilePage = () => {
             <div className={styles.commentList}>
               {/* Mock comment items */}
               <div className={styles.commentItem}>
-                <p>"Great tour! Highly recommend."</p>
+                <p>"Great tour! Highly recommend."{user.comments?.[0]?.desc}</p>
                 <span className={styles.commentDate}>1 day ago</span>
               </div>
               <div className={styles.commentItem}>
@@ -241,7 +242,7 @@ const ProfilePage = () => {
         <div className={styles.sidebar}>
           <div className={styles.sidebarHeader}>
             <Image
-              src={user.avatar}
+              src={user.image}
               alt={user.name}
               width={60}
               height={60}

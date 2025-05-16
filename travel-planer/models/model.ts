@@ -6,12 +6,14 @@ export interface User {
     username: string,
     email: string,
     password: string,
-    destination: Destination[] | null,
+    wishList: Destination[] | null,
     comments: Comment[] | null,
+    isPro: boolean,
 }
 
 export interface Comment {
     id: number,
+    rating: number,
     date: Date | string,
     desc: string,
     author: User,
@@ -29,7 +31,7 @@ export interface Destination { //object
     rating: number,
     filters: string[],//extreme, horror
     comments: Comment[] | null,
-    similars: Destination[] | null,
+    // similars: Destination[] | null,
     hotels: Hotel[] | null,
     iswishListed: boolean,
 }
@@ -42,7 +44,8 @@ export interface Category {
 export interface Hotel {
     id: number,
     name: string,
-    distance: number,
+    image: string,
+    distance: number | null,
     price: number,
     rating: number,
 }
