@@ -163,7 +163,7 @@ export default function ObjectPage() {
                   <span className={styles.author}>{comment.author}</span>
                   <span className={styles.date}>{comment.date}</span>
                 </div>
-                <button className={styles.readMore}>read more</button>
+                {/* <button className={styles.readMore}>read more</button> */}
               </div>
             ))}
           </div>

@@ -137,7 +137,7 @@ export default function SearchPage() {
       <div className={styles.searchPage}>
         <div className={styles.searchFilters}>
           <div className={styles.mainFilters}>
-            <button className={styles.dateButton}>
+            {/* <button className={styles.dateButton}>
               <Image
                 src="/icons/calendar.svg"
                 alt="Calendar"
@@ -145,7 +145,7 @@ export default function SearchPage() {
                 height={20}
               />
               Select Dates
-            </button>
+            </button> */}
             <button className={styles.filterButton}>
               <Image
                 src="/icons/filter.svg"
@@ -166,7 +166,7 @@ export default function SearchPage() {
                 </button>
               ))}
             </div>
-            <div className={styles.sortDropdown}>
+            {/* <div className={styles.sortDropdown}>
               <span>Sort by:</span>
               <select>
                 <option value="rating">Rating</option>
@@ -174,7 +174,7 @@ export default function SearchPage() {
                 <option value="vision">Vision</option>
                 <option value="celebrate">Celebrate</option>
               </select>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -224,7 +224,7 @@ export default function SearchPage() {
             className={styles.paginationButton}
             onClick={() => {}}
           >
-            next page
+            see more
           </button>
         </div>
       </div>

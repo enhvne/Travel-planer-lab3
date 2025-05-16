@@ -43,7 +43,7 @@
                   <div 
                     key={index} 
                     className="card"
-                    onClick={() => router.push(`/searching`)}
+                    onClick={() => router.push(`/object`)}
                   >
                     <Image
                       src={vision.image}

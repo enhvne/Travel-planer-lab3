@@ -15,13 +15,13 @@ export default function TopBar() {
         <div className={styles.topbarContent}>
           {/* Logo */}
           <Link href="/" className={styles.logo}>
-            <Image
+            {/* <Image
               src="/icons/heart.svg"
               alt="Travel Planner"
               width={40}
               height={40}
               priority
-            />
+            /> */}
             <span>Travel Planner</span>
           </Link>
 

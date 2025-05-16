@@ -2,7 +2,7 @@ export interface User {
     id: number,
     name: string,
     image: string,
-    position: string,
+    role: string,
     username: string,
     email: string,
     password: string,
@@ -27,6 +27,7 @@ export interface Destination { //object
     location: {lat: number, lng: number},
     sum: string | null,
     rating: number,
+    filters: string[],//extreme, horror
     comments: Comment[] | null,
     similars: Destination[] | null,
     hotels: Hotel[] | null,
