@@ -4,7 +4,7 @@ import Image from 'next/image';
 import styles from './style.module.css';
 import '../../app/globals.css';
 import TopBar from '@/components/TopBar';
-import { FaUser, FaCog, FaHistory, FaHeart, FaSignOutAlt, FaEdit } from 'react-icons/fa';
+import { FaUser, FaCog, FaHistory, FaHeart, FaSignOutAlt, FaEdit, FaComment, FaKey } from 'react-icons/fa';
 
 interface User {
   avatar: string;
@@ -13,6 +13,7 @@ interface User {
   joinedDate: string;
   savedTours: number;
   completedTours: number;
+  role: 'user' | 'admin';
 }
 
 const ProfilePage = () => {
@@ -22,7 +23,7 @@ const ProfilePage = () => {
   const [editedUser, setEditedUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // API-оос хэрэглэгчийн мэдээлэл татна
+    // Fetch user information from API
     fetch('/api/user')
       .then((res) => res.json())
       .then((data) => {
@@ -71,7 +72,7 @@ const ProfilePage = () => {
     }
   };
 
-  if (!user) return <p>Уншиж байна...</p>;
+  if (!user) return <p>Loading...</p>;
 
   const renderContent = () => {
     switch (activeTab) {
@@ -190,6 +191,44 @@ const ProfilePage = () => {
             </div>
           </div>
         );
+      case 'comments':
+        return (
+          <div className={styles.commentsSection}>
+            <h2>My Comments</h2>
+            <div className={styles.commentList}>
+              {/* Mock comment items */}
+              <div className={styles.commentItem}>
+                <p>"Great tour! Highly recommend."</p>
+                <span className={styles.commentDate}>1 day ago</span>
+              </div>
+              <div className={styles.commentItem}>
+                <p>"Had a wonderful experience!"</p>
+                <span className={styles.commentDate}>3 days ago</span>
+              </div>
+            </div>
+          </div>
+        );
+      case 'changePassword':
+        return (
+          <div className={styles.changePasswordSection}>
+            <h2>Change Password</h2>
+            <div className={styles.changePasswordForm}>
+              <div className={styles.formGroup}>
+                <label>Current Password:</label>
+                <input type="password" name="currentPassword" />
+              </div>
+              <div className={styles.formGroup}>
+                <label>New Password:</label>
+                <input type="password" name="newPassword" />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Confirm New Password:</label>
+                <input type="password" name="confirmNewPassword" />
+              </div>
+              <button className={styles.saveButton}>Change Password</button>
+            </div>
+          </div>
+        );
       default:
         return null;
     }
@@ -232,6 +271,20 @@ const ProfilePage = () => {
               <FaHistory className={styles.navIcon} />
               Activity
             </button>
+            <button
+              className={`${styles.navItem} ${activeTab === 'comments' ? styles.active : ''}`}
+              onClick={() => setActiveTab('comments')}
+            >
+              <FaComment className={styles.navIcon} />
+              Comments
+            </button>
+            <button
+              className={`${styles.navItem} ${activeTab === 'changePassword' ? styles.active : ''}`}
+              onClick={() => setActiveTab('changePassword')}
+            >
+              <FaKey className={styles.navIcon} />
+              Change Password
+            </button>
           </nav>
           <button className={styles.logoutButton}>
             <FaSignOutAlt className={styles.navIcon} />
@@ -246,4 +299,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage; 
+export default ProfilePage;
