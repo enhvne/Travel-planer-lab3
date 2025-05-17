@@ -1,33 +1,92 @@
 'use client';
-import '../../app/globals.css';
-import React, { useState } from 'react';
+
+import '../../../app/globals.css';
+import React, { useEffect, useState} from 'react';
+import {useRouter} from 'next/navigation';
 import Image from 'next/image';
-import TopBar from '../../components/TopBar';
-import Footer from '../../components/Footer';
-import styles from './style.module.css';
-import { Destination } from '@/models/model';
+import TopBar from '../../../components/TopBar';
+import Footer from '../../../components/Footer';
+import styles from './../style.module.css';
+import { Destination, CommentU } from '@/models/model';
 
 
-export default function ObjectPage() {
+type Props = {
+    params: {
+      id: string;
+    };
+  };
+  
+export default function ObjectPage({ params }: Props) {
+  const router = useRouter();
+  const { id } = params;
   const [destination, setDestination] = useState<Destination>();
-  const [mainImage, setMainImage] = useState(destination?.image?.[0] ?? "/images/mainImage.png");
-  const [comments, setComments] = useState(destination?.comments ??[]);
+  const [mainImage, setMainImage] = useState(destination?.images?.[0] ?? "/images/mainImage.png");
+  const [comments, setComments] = useState<CommentU[]>(destination?.comments??[]);
   const [similarVisions, setSimilarVisions] = useState<Destination[]>([]);
+  const [thumbnails, setThumbnails] = useState<string[]>([]);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await fetch('/api/object');
+        const data: Destination[] = await res.json();
+
+        const dest = data.find(d => d.id === Number(id)) ?? data[0]; // id-р шүүж авах
+        setDestination(dest);
+
+        // comments, image, wish list
+        setComments(dest.comments ?? []);
+        setMainImage(dest.images?.[0] ?? "/images/mainImage.png");
+        setThumbnails([
+          dest.images?.[1] ?? "/images/similar1.jpg",
+          dest.images?.[2] ?? "/images/similar1.jpg",
+          dest.images?.[3] ?? "/images/similar1.jpg",
+          dest.images?.[4] ?? "/images/similar1.jpg",
+        ]);
+        setIsWishlisted(dest.isWishListed ?? true);
+
+        const similar = data.filter(s =>
+          s.id !== dest.id &&
+          s.category.some((id: number) => dest.category.includes(id))
+        );
+        setSimilarVisions(similar);
+        
+
+      } catch (err) {
+        console.error('Error fetching destination:', err);
+      }
+    }
+
+    fetchData();
+  }, [id]);
+
+  const handleWishlistToggle = async () => {
+    try {
+      const res = await fetch(`/api/wishList/${destination?.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ isWishlisted: !isWishlisted }),
+      });
   
-  const thumbnails = [
-    '/images/image1.jpg',
-    '/images/image2.jpg',
-    '/images/image3.jpg',
-    '/images/image4.jpg'
-  ];
+      if (res.ok) {
+        setIsWishlisted(prev => !prev); // Client state-г шинэчилнэ
+      } else {
+        console.error('Failed to update wishlist');
+      }
+    } catch (error) {
+      console.error('Error updating wishlist:', error);
+    }
+  };
+  
 
   return (
     <div>
       <TopBar />
       <main className={styles.main}>
-        <h1 className={styles.title}>Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум</h1>
+        <h1 className={styles.title}>{destination?.title}, {destination?.province} {id}</h1>
         
         <div className={styles.imageSection}>
           <div className={styles.thumbnailGallery}>
@@ -58,7 +117,7 @@ export default function ObjectPage() {
             />
             <button 
               className={`${styles.wishlistButton} ${isWishlisted ? styles.wishlisted : ''}`}
-              onClick={() => setIsWishlisted(!isWishlisted)}
+              onClick={handleWishlistToggle}
             >
               <Image
                 src="/icons/heart.svg"
@@ -88,7 +147,7 @@ export default function ObjectPage() {
                 </div>
                 <p className={styles.commentText}>{comment.desc}</p>
                 <div className={styles.commentMeta}>
-                  <span className={styles.author}>{comment.author.name}</span>
+                  <span className={styles.author}>{comment.author}</span>
                   <span className={styles.date}>{(comment.date).toString()}</span>
                 </div>
                 {/* <button className={styles.readMore}>read more</button> */}
@@ -108,16 +167,17 @@ export default function ObjectPage() {
         <section className={styles.similarVisions}>
           <h2>Similar visions</h2>
           <div className={styles.similarGrid}>
-            {similarVisions.map((vision, index) => (
-              <div key={vision.id} className={styles.similarCard}>
+            {similarVisions.slice(0, 5).map((vision, index) => (
+              <div key={vision.id} className={styles.similarCard} onClick={() => router.push(`/object/${vision.id}`)}>
                 <div className={styles.similarImageContainer}>
                   <Image
-                    src={vision.image[index]}
+                    src={vision.images[index]}
                     alt={vision.title}
                     width={400}
                     height={300}
                     className={styles.similarImage}
                   />
+                  <span className={styles.visionTitle}>{vision.title}</span>
                   <button 
                     className={styles.wishlistIcon}
                     onClick={() => {}}

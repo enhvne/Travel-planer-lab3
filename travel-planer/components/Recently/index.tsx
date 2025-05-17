@@ -52,7 +52,7 @@ export default function Recently() {
                             <div 
                                 key={item.id} 
                                 className="card"
-                                onClick={() => router.push(`/object`)}>
+                                onClick={() => router.push(`/object/${item.id}`)}>
                                 <Image
                                     src={item.image}
                                     alt={item.title}

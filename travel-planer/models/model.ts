@@ -7,34 +7,35 @@ export interface User {
     email: string,
     password: string,
     wishList: Destination[] | null,
-    comments: Comment[] | null,
+    comments: CommentU[] | null,
     isPro: boolean,
     recently: Destination[] | null,
+    messages: string[] | null,
 }
 
-export interface Comment {
+export interface CommentU {
     id: number,
     rating: number,
     date: Date | string,
     desc: string,
-    author: User,
+    author: User["name"],
 }
 
 export interface Destination { //object
     id: number,
     title: string,
     overview: string,
-    category: Category[], // hiking, biking, climbing, chillig
+    category: Category["id"][], // hiking, biking, climbing, chillig
     province: string,
-    image: string,
+    images: string[],
     location: {lat: number, lng: number},
     sum: string | null,
     rating: number,
-    filters: string[],//extreme, horror
-    comments: Comment[] | null,
+    filters: string[],       //extreme, horror
+    comments: CommentU[] | null,
     // similars: Destination[] | null,
     hotels: Hotel[] | null,
-    iswishListed: boolean,
+    isWishListed: boolean,
 }
 
 export interface Category {
