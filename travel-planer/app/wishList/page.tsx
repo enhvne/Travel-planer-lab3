@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import styles from "./style.module.css";
-import type { WishList } from '@/models/model';
+import type { WishList, User } from '@/models/model';
 import { useUser } from '@/context/UserContext';
 
 export default function WishList() {
@@ -14,7 +14,11 @@ export default function WishList() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const sidebarRef = useRef<HTMLDivElement | null>(null);
-    const { user } = useUser();
+    const { user, setUser } = useUser();
+
+    const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+    const [loginInput, setLoginInput] = useState({ username: '', password: '' });
+
 
     useEffect(() => {
         const fetchWishList = async () =>{
@@ -54,24 +58,53 @@ export default function WishList() {
     
 
     const clickBtn = (): void => {
-        if (user) {
-            const name = window.prompt("Enter wishlist name:");
-                if (!name || !name.trim()) return;
-                const newList: WishList = {
-                    id: Date.now(),
-                    name: name.trim()
-                };
-                setWishlists([...wishlists, newList]);
-            };
-            
+        if (!user) {
+            window.alert("Та энэхүү үйлдлийг хийхийн тулд нэвтэрсэн байх шаардлагатай.");
+            return;
+            // setShowLoginPrompt(true);
+            // return;
         }
-        
 
+        const name = window.prompt("Enter wishlist name:");
+        if (!name || !name.trim()) return;
+
+        const newList: WishList = {
+            id: Date.now(),
+            name: name.trim(),
+            destinations: [],
+        };
+        setWishlists([...wishlists, newList]);
+        
+    }
     const deleteWishlist = (id: number, e: React.MouseEvent) => {
         e.stopPropagation(); // prevent navigation
         setWishlists(wishlists.filter(wish => wish.id !== id));
     };
-
+    const deleteDestinationFromWishlist = (wishlistId: number, destIdToDelete: number) => {
+        setWishlists(prev => {
+          const updated = prev
+            .map(wishlist => {
+              if (wishlist.id === wishlistId && wishlist.destinations) {
+                const updatedDestinations = wishlist.destinations.filter(dest => dest.id !== destIdToDelete);
+      
+                // Хэрвээ destinations хоосон бол энэ wishlist-ийг устгана
+                if (updatedDestinations.length === 0) {
+                  return null; // түр хугацаанд null болгоно
+                }
+      
+                    return {
+                    ...wishlist,
+                    destinations: updatedDestinations,
+                    };
+                }
+                return wishlist;
+            })
+            .filter((w): w is WishList => w !== null); // TypeScript-д null биш гэдгийг заана
+      
+          return updated;
+        });
+    };
+      
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     
@@ -101,15 +134,26 @@ export default function WishList() {
                                 className={styles.card}
                                 onClick={() => setSelectedId(wish.id!)}
                             >
-                                <Image
-                                    src="/images/add-icon.png"
-                                    alt= {wish.name}
-                                    width={200}
-                                    height={200}
-                                    className= {styles.card_image}
-                                />
+                                <div className={styles.imageBox}>
+                                    {wish.destinations && wish.destinations.length > 0 ? (
+                                        <Image
+                                        src={wish.destinations[0].images?.[0] || "/images/default.jpg"}
+                                        alt={wish.destinations[0].title}
+                                        width={200}
+                                        height={200}
+                                        className={styles.card_image}
+                                        />
+                                    ) : (
+                                        <Image
+                                        src="/images/default.jpg"
+                                        alt="default"
+                                        width={200}
+                                        height={200}
+                                        className={styles.card_image}
+                                        />
+                                    )}
+                                </div>
                                 <p>{wish.name}</p>
-
                                 <button
                                     className={styles.deleteBtn}
                                     onClick={(e) => deleteWishlist(wish.id, e)}
@@ -124,10 +168,22 @@ export default function WishList() {
                             {wishlists.find(w => w.id === selectedId)?.name ?? "Wishlist"}
                         </h2>
                         <div className={styles.scrollableContent}>
-                            {Array.from({ length: 30 }).map((_, i) => (
-                            <p key={i} >
-                                {wishlists.find(w => w.id === selectedId)?.name ?? 'No name'}
-                            </p>
+                            {wishlists.find(w => w.id === selectedId)?.destinations?.map((destId, i)=>(
+                                <div className={styles.wishListItem} onClick={() => router.push(`/object/${destId.id}`)}>
+                                    <Image
+                                        src={destId.images[0]}
+                                        alt= {destId.title}
+                                        width={150}
+                                        height={150}
+                                        className={styles.wishListItemImage}
+                                    />
+                                    <p>{destId.title}</p>
+                                    <p>{destId.province}</p>
+                                    <button
+                                        className={styles.deleteBtn}
+                                        onClick={() => deleteDestinationFromWishlist(selectedId, destId.id)}
+                                    >x</button>
+                                </div>
                             ))}
                         </div>
                     </div>

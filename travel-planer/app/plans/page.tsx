@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api';
 import styles from './style.module.css';
 import { mapStyles, retroStyle } from './mapStyles';
+import { useUser } from '@/context/UserContext';
 
 interface Location {
   id: number;
@@ -135,6 +136,7 @@ const mapOptions = {
 export default function WishList() {
   const [markerIcons, setMarkerIcons] = useState<{ [key: string]: any }>({});
   const path = locations.map(location => location.position);
+  const {user} = useUser();
 
   const onLoad = useCallback((map: any) => {
     const bounds = new window.google.maps.LatLngBounds();
@@ -162,7 +164,7 @@ export default function WishList() {
         <div className={styles.routeContainer}>
           <div className={styles.mapSection}>
             <div className={styles.mapHeader}>
-              <h1>Your Travel Route</h1>
+              <h1>Your Travel Route {user?.id}-aar nevtersen</h1>
               <div className={styles.sortBy}>
                 <span>Lists:</span>
                 <select>

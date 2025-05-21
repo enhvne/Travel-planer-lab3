@@ -1,3 +1,4 @@
+import { CommentU } from '@/models/model';
 import { NextResponse } from 'next/server'
 import { title } from 'process';
 
