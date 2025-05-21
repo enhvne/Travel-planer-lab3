@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './style.module.css';
-import '../../app/globals.css';
-import TopBar from '@/components/TopBar';
 import { FaUser, FaCog, FaHistory, FaHeart, FaSignOutAlt, FaEdit, FaComment, FaKey } from 'react-icons/fa';
 import { User } from '@/models/model';
 
@@ -237,7 +235,6 @@ const ProfilePage = () => {
 
   return (
     <div>
-      <TopBar />
       <div className={styles.container}>
         <div className={styles.sidebar}>
           <div className={styles.sidebarHeader}>

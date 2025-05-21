@@ -2,13 +2,10 @@
 
 import Image from 'next/image';
 import styles from './style.module.css';
-import '../../app/globals.css';
-import TopBar from '@/components/TopBar';
 
 export default function AboutUs() {AboutUs
     return (
         <div>
-            <TopBar />
             <br/>
             <div className={styles.aboutContainer}>
                 <div className={styles.hero}>

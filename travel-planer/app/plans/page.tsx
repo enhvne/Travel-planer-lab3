@@ -3,10 +3,7 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api';
-import TopBar from '../../components/TopBar';
-import Footer from '../../components/Footer';
 import styles from './style.module.css';
-import '../../app/globals.css';
 import { mapStyles, retroStyle } from './mapStyles';
 
 interface Location {
@@ -161,7 +158,6 @@ export default function WishList() {
 
   return (
     <div>
-      <TopBar />
       <main className={styles.main}>
         <div className={styles.routeContainer}>
           <div className={styles.mapSection}>
@@ -261,7 +257,7 @@ export default function WishList() {
           </div>
         </div>
       </main>
-      <Footer />
+
     </div>
   );
 }

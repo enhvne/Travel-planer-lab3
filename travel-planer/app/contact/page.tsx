@@ -2,8 +2,7 @@
 
 import { useState } from 'react';
 import styles from './style.module.css';
-import '../../app/globals.css';
-import TopBar from '@/components/TopBar';
+
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -57,7 +56,6 @@ export default function Contact() {
 
     return (
         <div>
-            <TopBar />
             <div className={styles.contactContainer}>
                 <div className={styles.hero}>
                     <h1>Contact Us</h1>

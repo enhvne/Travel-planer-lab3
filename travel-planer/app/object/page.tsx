@@ -1,16 +1,13 @@
 'use client';
-import '../../app/globals.css';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import TopBar from '../../components/TopBar';
-import Footer from '../../components/Footer';
 import styles from './style.module.css';
 import { Destination } from '@/models/model';
 
 
 export default function ObjectPage() {
   const [destination, setDestination] = useState<Destination>();
-  const [mainImage, setMainImage] = useState(destination?.image?.[0] ?? "/images/mainImage.png");
+  const [mainImage, setMainImage] = useState(destination?.images?.[0] ?? "/images/mainImage.png");
   const [comments, setComments] = useState(destination?.comments ??[]);
   const [similarVisions, setSimilarVisions] = useState<Destination[]>([]);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -25,7 +22,6 @@ export default function ObjectPage() {
 
   return (
     <div>
-      <TopBar />
       <main className={styles.main}>
         <h1 className={styles.title}>Oтгoнтэнгэр уул, Завхан аймгийн Алдархаан сум</h1>
         
@@ -88,7 +84,7 @@ export default function ObjectPage() {
                 </div>
                 <p className={styles.commentText}>{comment.desc}</p>
                 <div className={styles.commentMeta}>
-                  <span className={styles.author}>{comment.author.name}</span>
+                  <span className={styles.author}>{comment.author}</span>
                   <span className={styles.date}>{(comment.date).toString()}</span>
                 </div>
                 {/* <button className={styles.readMore}>read more</button> */}
@@ -112,7 +108,7 @@ export default function ObjectPage() {
               <div key={vision.id} className={styles.similarCard}>
                 <div className={styles.similarImageContainer}>
                   <Image
-                    src={vision.image[index]}
+                    src={vision.images[index]}
                     alt={vision.title}
                     width={400}
                     height={300}
@@ -135,7 +131,7 @@ export default function ObjectPage() {
           </div>
         </section>
       </main>
-      <Footer />
+
     </div>
   );
 }

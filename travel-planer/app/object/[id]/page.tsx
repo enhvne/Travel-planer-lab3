@@ -1,11 +1,8 @@
 'use client';
 
-import '../../../app/globals.css';
 import React, { useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import Image from 'next/image';
-import TopBar from '../../../components/TopBar';
-import Footer from '../../../components/Footer';
 import styles from './../style.module.css';
 import { Destination, CommentU } from '@/models/model';
 
@@ -84,7 +81,6 @@ export default function ObjectPage({ params }: Props) {
 
   return (
     <div>
-      <TopBar />
       <main className={styles.main}>
         <h1 className={styles.title}>{destination?.title}, {destination?.province} {id}</h1>
         
@@ -195,7 +191,7 @@ export default function ObjectPage({ params }: Props) {
           </div>
         </section>
       </main>
-      <Footer />
+
     </div>
   );
 }

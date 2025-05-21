@@ -4,8 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import styles from "./style.module.css";
-import TopBar from '@/components/TopBar';
-import Footer from '@/components/Footer';
 import '../globals.css';
 
 interface WishListItem{
@@ -78,7 +76,6 @@ export default function WishList() {
     
     return (
         <div>
-            <TopBar />
             <div className={styles.wishList}>
                 <h1>WishList</h1>
                 <div className={styles.container}>
@@ -136,7 +133,6 @@ export default function WishList() {
                     )}
                 </div>
             </div>
-            <Footer />
         </div> 
     );
 }
