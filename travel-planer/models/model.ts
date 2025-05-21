@@ -60,7 +60,6 @@ export interface Province{
 export interface WishList{
     id: number,
     name: string,
-    destinations: Destination[],
-    user: User['id'],
-    
+    destinations?: Destination[],
+    user?: User['id'], // shaardalagatai bolood null bolgov. (unendee null bish)
 }

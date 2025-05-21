@@ -146,7 +146,6 @@ export default function ObjectPage({ params }: Props) {
                   <span className={styles.author}>{comment.author}</span>
                   <span className={styles.date}>{(comment.date).toString()}</span>
                 </div>
-                {/* <button className={styles.readMore}>read more</button> */}
               </div>
             ))}
           </div>
@@ -156,7 +155,6 @@ export default function ObjectPage({ params }: Props) {
           <h2>Overview</h2>
           <p>
             {destination?.overview}
-            {/* Отгонтэнгэр уул нь Монгол Улсын баруун бүсэд, Завхан аймгийн Алдархаан сумын нутагт байрлах Хангайн нурууны ноён оргил бөгөөд далайн түвшнээс 4021 метр өндөрт өргөгдсөн Монголын ариун дагшин уул юм. Монголчууд эртнээс Очирваань хайрхан, Этүгэн уул хэмээн хүндэтгэн тахиж ирсэн бөгөөд бөө мөргөлийн гол тахилгатай газар билээ. Уулын оргил хэсэг нь мөнх цастай, түүний доор Бадархундага зэрэг үзэсгэлэнт нуур, рашаан сувиллын газрууд оршдог. Отгонтэнгэр нь Хангайн нурууны байгалийн өвөрмөц тогтоц бүхий, олон төрлийн ховор ургамал, амьтан амьдардаг биосферийн цогцолборт газар бөгөөд 1992 оноос дархан цаазат газар болж хамгаалагдаж байна. Уулын орчимд Монголын уламжлалт тахилга, шашны зан үйл одоо ч хадгалагдан үлдсэн бөгөөд ЮНЕСКО-ийн дэлхийн байгалийн өвд бүртгэгдэх магадлалтай газруудын нэг юм. Отгонтэнгэр уул нь байгалийн үзэсгэлэн, түүх соёлын өвийг нэгтгэсэн аялал жуулчлалын чухал төв бөгөөд ууланд авиралт хийх, рашаан сувилалд зочлох, байгалийн аялал хийх боломжтой газар юм. */}
           </p>
         </section>
 
@@ -164,16 +162,16 @@ export default function ObjectPage({ params }: Props) {
           <h2>Similar visions</h2>
           <div className={styles.similarGrid}>
             {similarVisions.slice(0, 5).map((vision, index) => (
-              <div key={vision.id} className={styles.similarCard} onClick={() => router.push(`/object/${vision.id}`)}>
+              <div key={vision.id} className={styles.similarCard} >
                 <div className={styles.similarImageContainer}>
                   <Image
-                    src={vision.images[index]}
+                    src={vision.images[0]}
                     alt={vision.title}
                     width={400}
                     height={300}
                     className={styles.similarImage}
                   />
-                  <span className={styles.visionTitle}>{vision.title}</span>
+                  <span className={styles.visionTitle} onClick={() => router.push(`/object/${vision.id}`)}>{vision.title}</span>
                   <button 
                     className={styles.wishlistIcon}
                     onClick={() => {}}

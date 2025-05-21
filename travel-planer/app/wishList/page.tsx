@@ -4,21 +4,17 @@ import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import styles from "./style.module.css";
-import '../globals.css';
-
-interface WishListItem{
-    id: number;
-    name: string;
-    
-}
+import type { WishList } from '@/models/model';
+import { useUser } from '@/context/UserContext';
 
 export default function WishList() {
     const router = useRouter()
-    const [wishlists, setWishlists] = useState<WishListItem[]>([]);
+    const [wishlists, setWishlists] = useState<WishList[]>([]);
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const sidebarRef = useRef<HTMLDivElement | null>(null);
+    const { user } = useUser();
 
     useEffect(() => {
         const fetchWishList = async () =>{
@@ -58,19 +54,24 @@ export default function WishList() {
     
 
     const clickBtn = (): void => {
-        const name = window.prompt("Enter wishlist name:");
-        if (!name || !name.trim()) return;
-        const newList: WishListItem = {
-            id: Date.now(),
-            name: name.trim()
-        };
-        setWishlists([...wishlists, newList]);
-    };
+        if (user) {
+            const name = window.prompt("Enter wishlist name:");
+                if (!name || !name.trim()) return;
+                const newList: WishList = {
+                    id: Date.now(),
+                    name: name.trim()
+                };
+                setWishlists([...wishlists, newList]);
+            };
+            
+        }
+        
 
     const deleteWishlist = (id: number, e: React.MouseEvent) => {
         e.stopPropagation(); // prevent navigation
         setWishlists(wishlists.filter(wish => wish.id !== id));
     };
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     
