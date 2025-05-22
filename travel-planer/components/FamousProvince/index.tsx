@@ -1,18 +1,13 @@
 'use client';
 
+import { Province } from "@/models/model";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
-
-interface province{
-    id: number,
-    name: string,
-    image: string,
-}
 export default function FamousProvince(){
     const router = useRouter();
-    const [provinces, setProvinces] = useState<province[]>([]);
+    const [provinces, setProvinces] = useState<Province[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -47,7 +42,7 @@ export default function FamousProvince(){
                         <div 
                             key={index} 
                             className="card"
-                            onClick={() => router.push(`/searching`)}
+                            onClick={() => router.push(`/searching/${province.name}`)}
                             >
                             <Image
                                 src={province.image}

@@ -1,25 +1,21 @@
  'use client';
 
+import { Destination } from '@/models/model';
  import Image from 'next/image'
  import { useRouter } from 'next/navigation';
  import { useEffect, useState } from "react";
  
- interface visions{
-  id: number,
-  name: string,
-  image: string,
- }
  export default function TopVisions(){
     const router = useRouter()
     /// useState<visions[]>([]) ene int
-    const [topVisions, setTopVisions] = useState<visions[]>([]);
+    const [topVisions, setTopVisions] = useState<Destination[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(()=> {
       const fetchVisions = async () => {
         try{
-          const response = await fetch('api/topVision');
+          const response = await fetch(`api/topVision`);
           const data = await response.json();
           // json-oor irsen ogogdliig data-d ogj tuuniigee setTopVisions-aar damjuulan topVisions-d hiin
           setTopVisions(data);
@@ -43,17 +39,17 @@
                   <div 
                     key={index} 
                     className="card"
-                    onClick={() => router.push(`/object`)}
+                    onClick={() => router.push(`/object/${vision.id}`)}
                   >
                     <Image
-                      src={vision.image}
-                      alt={vision.name}
+                      src={vision.images[0]}
+                      alt={vision.title}
                       width={800}
                       height={450}
                       className="card-image"
                     />
                     <div className="card-content">
-                      <h3>{vision.name}</h3>
+                      <h3>{vision.title}</h3>
                     </div>
                   </div>
                 ))}
@@ -63,15 +59,3 @@
         </div>
     )
 }
-
-//  const topVisions = [
-//     { id: 1, name: "Altai Tavan Bogd", image: "/images/visions/tavanBogd.jpg" },
-//     { id: 2, name: "Hovd River", image: "/images/visions/hovdgol.jpg" },
-//     { id: 3, name: "Tsambagarav", image: "/images/visions/tsambagarav.jpg" },
-//     { id: 4, name: "Horidol saridag", image: "/images/visions/horidol.jpg" },
-//     { id: 5, name: "Tsagaan lake", image: "/images/visions/tsagaan.jpg" },
-//     { id: 6, name: "Khuvsgul lake", image: "/images/visions/khuvsgul.jpg" },
-//     { id: 7, name: "Uvs lake", image: "/images/visions/uvs.jpg" },
-//     { id: 8, name: "Khetsuu rock", image: "/images/visions/khetsuu.jpg" }
-//   ];
-  

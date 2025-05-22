@@ -59,6 +59,7 @@ export interface Hotel {
 export interface Province{
     id: number,
     name: string,
+    image: string,
 }
 
 export interface WishList{

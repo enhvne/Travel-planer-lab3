@@ -3,41 +3,8 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './style.module.css';
 import { FaUser, FaCog, FaComment, FaSignOutAlt, FaEdit, FaKey } from 'react-icons/fa';
-import { User } from '@/models/model';
+import { User , Settings} from '@/models/model';
 import { useRouter } from 'next/navigation';
-
-// Define interfaces if not already in models/model.ts
-interface Settings { // If not in models/model.ts
-  emailNotifications: boolean;
-  language: string;
-  currency: string;
-}
-
-interface ActivityItem { // If not in models/model.ts
-  id: number;
-  desc: string;
-  date: string;
-}
-
-// Update User interface if not already in models/model.ts
-// export interface User { // If not in models/model.ts
-//   id?: number;
-//   name: string;
-//   image: string;
-//   role?: string;
-//   username?: string;
-//   email: string;
-//   password?: string;
-//   wishLists?: any[];
-//   comments?: any[];
-//   isPro?: boolean;
-//   recently?: any[];
-//   messages?: string[];
-//   savedTours?: number;
-//   completedTours?: number;
-//   settings?: Settings;
-//   activity?: ActivityItem[];
-// }
 
 const ProfilePage = () => {
   const router = useRouter();
