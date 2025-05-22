@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styles from './style.module.css';
 import TopBar from '@/components/TopBar';
-import { FaUser, FaCog, FaHistory, FaSignOutAlt, FaEdit, FaComment, FaKey } from 'react-icons/fa';
+import { FaUser, FaCog, FaHistory, FaHeart, FaSignOutAlt, FaEdit, FaComment, FaKey } from 'react-icons/fa';
 import { User } from '@/models/model';
 
 const ProfilePage = () => {

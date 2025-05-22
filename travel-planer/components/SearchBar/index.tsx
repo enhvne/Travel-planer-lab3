@@ -52,11 +52,11 @@ export default function SearchBar() {
   );
 
   const handleSearch = () => {
-    const searchParams = new URLSearchParams();
-    if (searchQuery) searchParams.set('location', searchQuery);
-    if (searchQueryType) searchParams.set('type', searchQueryType);
+    // const searchParams = new URLSearchParams();
+    // if (searchQuery) searchParams.set('location', searchQuery);
+    // if (searchQueryType) searchParams.set('type', searchQueryType);
     
-    router.push(`/pages/search?${searchParams.toString()}`);
+    router.push(`/searching/${searchQuery}`);
   };
 
   return (

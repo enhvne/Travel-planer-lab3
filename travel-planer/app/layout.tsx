@@ -1,6 +1,5 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import SessionProviderWrapper from './SessionProviderWrapper'
 
 export const metadata: Metadata = {
   title: 'Travel Planner',
@@ -15,9 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-gray-50">
-        <SessionProviderWrapper>
-          {children}
-        </SessionProviderWrapper>
+        {children}
       </body>
     </html>
   )

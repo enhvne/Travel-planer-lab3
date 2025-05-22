@@ -3,64 +3,63 @@ import React, { useState , useEffect} from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Category, Destination } from '@/models/model';
-import styles from './style.module.css';
+import styles from './../style.module.css';
+import { debuglog } from 'util';
 
-interface Place {
-  id: number;
-  image: string;
-  title: string;
-  rating: string;
-  isWishListed?: boolean;
+type Props = {
+  params: {
+    province: string;
+  }
 }
-export default function SearchPage() {
+
+export default function SearchPage({params}: Props) {
   const router = useRouter();
+  const { province } = params;
   const searchParams = useSearchParams();
-  const location = searchParams?.get('location') || '';
+  // const location = searchParams?.get('location') || '';
   const [destinations, setDestinations] = useState<Destination[]>([]);
   const [categoreis, setCategories] = useState<Category[]>([]);
   const [isWishListed, setIsFavorite] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-const [currentPage, setCurrentPage] = useState(1);
-  
-  
-
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(()=>{
     async function fetchData(){
       try{
-        const resCate = await fetch(`api/category`);
+        const resCate = await fetch(`../api/category`);
         const dataCate: Category[] = await resCate.json();
         setCategories(dataCate);
 
-        const res = await fetch(`api/searching/`);//${province}
+        const encodedProvince = encodeURIComponent(province)
+        const res = await fetch(`/api/searching/${encodedProvince}`);
         const data: Destination[] = await res.json();
+        debuglog('called');
         setDestinations(data);
 
-      } catch {
-
-      } finally {
-
-      }
+      } catch (err){
+        console.error('Error fetching destinations:', err);
+      } 
     }
 
     fetchData();
-  }, []);
-  const toggleCategory = (category: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(category)
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
+  }, [province]); //province oorchlogdoh burt ajilana
+
+  const toggleCategory = (id: number) => {
+    setSelectedCategories(prev =>
+      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
     );
   };
+  
 
   const filteredDest = destinations.filter(place => {
-    if (location && !place.title.toLowerCase().includes(location.toLowerCase())) {
-      return false;
+    if (selectedCategories.length > 0) {
+      const hasMatch = place.category.some(catId => selectedCategories.includes(catId));
+      if (!hasMatch) return false;
     }
     return true;
   });
-  
-  const itemsPerPage = 1;
+
+  const itemsPerPage = 6;// nemegdeh dest-iin too
   const paginatedDest = filteredDest.slice(0, currentPage * itemsPerPage);
 
   return (
@@ -78,15 +77,16 @@ const [currentPage, setCurrentPage] = useState(1);
               Categories
             </button>
             <div className={styles.categoryScroll}>
-              {categoreis.map((category) => (
-                <button
-                  key={category.id}
-                  className={`${styles.categoryButton} ${selectedCategories.includes(category.name) ? styles.categoryActive : ''}`}
-                  onClick={() => toggleCategory(category.name)}
-                >
-                  {category.name}
-                </button>
-              ))}
+            {categoreis.map((category) => (
+              <button
+                key={category.id}
+                className={`${styles.categoryButton} ${selectedCategories.includes(category.id) ? styles.categoryActive : ''}`}
+                onClick={() => toggleCategory(category.id)}
+              >
+                {category.name}
+              </button>
+            ))}
+
             </div>
           </div>
         </div>
@@ -96,7 +96,7 @@ const [currentPage, setCurrentPage] = useState(1);
             <div 
               key={dest.id} 
               className={styles.resultCard}
-              onClick={() => router.push(`/object`)}
+              onClick={() => router.push(`/object/${dest.id}`)}
             >
               <div className={styles.imageContainer}>
                 <Image
