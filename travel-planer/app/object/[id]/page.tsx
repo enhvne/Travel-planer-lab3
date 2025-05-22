@@ -22,6 +22,8 @@ export default function ObjectPage({ params }: Props) {
   const [similarVisions, setSimilarVisions] = useState<Destination[]>([]);
   const [thumbnails, setThumbnails] = useState<string[]>([]);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [newComment, setNewComment] = useState({ rating: 5, desc: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -78,6 +80,45 @@ export default function ObjectPage({ params }: Props) {
     }
   };
   
+  const handleCommentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    if (!token) {
+      router.push('/login');
+      return;
+    }
+
+    if (!newComment.desc.trim()) {
+      alert('Please enter a comment');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`/api/object/${id}/comment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(newComment),
+      });
+
+      if (res.ok) {
+        const addedComment = await res.json();
+        setComments(prev => [...prev, addedComment]);
+        setNewComment({ rating: 5, desc: '' });
+      } else {
+        console.error('Failed to add comment');
+        alert('Failed to add comment');
+      }
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      alert('Error adding comment');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div>
@@ -128,6 +169,39 @@ export default function ObjectPage({ params }: Props) {
 
         <section className={styles.comments}>
           <h2>Comments</h2>
+          
+          {/* Add Comment Form */}
+          <form onSubmit={handleCommentSubmit} className={styles.commentForm}>
+            <div className={styles.ratingInput}>
+              <label>Rating:</label>
+              <div className={styles.stars}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    className={star <= newComment.rating ? styles.starFilled : styles.star}
+                    onClick={() => setNewComment(prev => ({ ...prev, rating: star }))}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+            </div>
+            <textarea
+              value={newComment.desc}
+              onChange={(e) => setNewComment(prev => ({ ...prev, desc: e.target.value }))}
+              placeholder="Write your comment here..."
+              className={styles.commentInput}
+              rows={4}
+            />
+            <button 
+              type="submit" 
+              className={styles.submitButton}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit Comment'}
+            </button>
+          </form>
+
           <div className={styles.commentsList}>
             {comments.map(comment => (
               <div key={comment.id} className={styles.commentCard}>

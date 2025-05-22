@@ -26,7 +26,7 @@ export default function AboutUs() {AboutUs
                     <div className={styles.teamGrid}>
                         <div className={styles.teamMember}>
                             <Image
-                                src="/images/profile.png"
+                                src="/images/profiles/tugsuu.jpg"
                                 alt="Team Member"
                                 width={200}
                                 height={200}
@@ -37,7 +37,7 @@ export default function AboutUs() {AboutUs
                         </div>
                         <div className={styles.teamMember}>
                             <Image
-                                src="/images/profile.png"
+                                src="/images/profiles/leader.jpg"
                                 alt="Team Member"
                                 width={200}
                                 height={200}
@@ -48,7 +48,7 @@ export default function AboutUs() {AboutUs
                         </div>
                         <div className={styles.teamMember}>
                             <Image
-                                src="/images/profile.png"
+                                src="/images/profiles/enh.jpg"
                                 alt="Team Member"
                                 width={200}
                                 height={200}

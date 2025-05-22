@@ -29,6 +29,7 @@ export default function Plans() {
   const [markerIcons, setMarkerIcons] = useState<{ [key: string]: any }>({});
   const [wishlists, setWishlists] = useState<WishList[]>([]);
   const [selectedWishListId, setSelectedWishListId] = useState<number|null>(null);
+  const [expandedLocationId, setExpandedLocationId] = useState<number | null>(null);
   
   
   const { user } = useUser();
@@ -36,7 +37,7 @@ export default function Plans() {
   useEffect(()=>{
     async function fetchData(){
       try{
-        const res = await fetch(`/api/plans/2`);//${user?.id}
+        const res = await fetch(`/api/plans/1`);//${user?.id}
         const data: WishList[] = await res.json();
         setWishlists(data);
 
@@ -149,41 +150,40 @@ export default function Plans() {
 
                 </div>
                 <div className={styles.locationContent}>
-                  <h3>{location.title}</h3>
-                  {location.overview && <p>{location.overview}</p>}
-                  {/* {location.image && (
-                    <div className={styles.locationImage}>
-                      <Image
-                        src={location.image}
-                        alt={location.name}
-                        width={400}
-                        height={200}
-                        style={{ objectFit: 'cover' }}
-                      />
-                    </div>
-                  )} */}
-                  {location.hotels && location.hotels.length > 0 && (
-                    <div className={styles.hotelInfo}>
-                      <h4>Nearby Hotels</h4>
-                      <div className={styles.hotels}>
+                  <div 
+                    className={styles.locationHeader}
+                    onClick={() => setExpandedLocationId(location.id === expandedLocationId ? null : location.id)}
+                  >
+                    <h3>{location.title}</h3>
+                    {location.overview && <p>{location.overview}</p>}
+                  </div>
 
-                        {location.hotels.map((hotel, i) => (
-                          <div key={i} className={styles.hotel}>
-                            <div className={styles.hotelImage}>
-                              <span>buudliin zurag</span>
-                            </div>
-                            <div className={styles.hotelDetails}>
-                              <p><strong>Zochil buudel</strong></p>
-                              <p>location {hotel.distance}</p>
-                              <p>{hotel.price} per night</p>
-                              <div className={styles.stars}>
-                                🌟 {hotel.rating} stars
+                  {expandedLocationId === location.id && (
+                    <div className={styles.locationDetails}>
+                      {location.hotels && location.hotels.length > 0 && (
+                        <div className={styles.hotelInfo}>
+                          <h4>Nearby Hotels</h4>
+                          <div className={styles.hotels}>
+
+                            {location.hotels.map((hotel, i) => (
+                              <div key={i} className={styles.hotel}>
+                                <div className={styles.hotelImage}>
+                                  <span>buudliin zurag</span>
+                                </div>
+                                <div className={styles.hotelDetails}>
+                                  <p><strong>Zochil buudel</strong></p>
+                                  <p>location {hotel.distance}</p>
+                                  <p>{hotel.price} per night</p>
+                                  <div className={styles.stars}>
+                                    🌟 {hotel.rating} stars
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        ))}
+                            ))}
 
-                      </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
 

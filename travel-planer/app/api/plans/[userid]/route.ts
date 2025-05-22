@@ -10,7 +10,16 @@ const wishlist1 = [
       position: {
         lat: 47.8445,
         lng: 92.7236
-      }
+      },
+      hotels: [
+        {
+          name: 'Chandmani Inn',
+          distance: '100m from center',
+          price: '$25/night',
+          location: 'mock',
+          rating: 4,
+        }
+      ]
     },
     {
       id: 2,
@@ -60,7 +69,23 @@ const wishlist1 = [
       position: {
         lat: 47.2167,
         lng: 92.3000
-      }
+      },
+      hotels: [
+        {
+          name: 'Buga Lodge',
+          distance: '50m from center',
+          price: '$35/night',
+          location: 'mock',
+          rating: 4,
+        },
+        {
+          name: 'Riverside Hotel',
+          distance: '500m from center',
+          price: '$40/night',
+          location: 'mock',
+          rating: 3,
+        }
+      ]
     },
     {
       id: 4,
@@ -69,7 +94,16 @@ const wishlist1 = [
       position: {
         lat: 47.1500,
         lng: 92.2500
-      }
+      },
+      hotels: [
+        {
+          name: 'Mandal Guesthouse',
+          distance: '200m from center',
+          price: '$30/night',
+          location: 'mock',
+          rating: 4,
+        }
+      ]
     },
     {
       id: 5,
@@ -78,7 +112,16 @@ const wishlist1 = [
       position: {
         lat: 47.0833,
         lng: 92.1667
-      }
+      },
+      hotels: [
+        {
+          name: 'Santmargats Inn',
+          distance: '1km from center',
+          price: '$20/night',
+          location: 'mock',
+          rating: 3,
+        }
+      ]
     },
     {
       id: 6,
@@ -87,7 +130,16 @@ const wishlist1 = [
       position: {
         lat: 47.0167,
         lng: 92.0833
-      }
+      },
+      hotels: [
+        {
+          name: 'Uul Camp',
+          distance: '5km from center',
+          price: '$50/night',
+          location: 'mock',
+          rating: 5,
+        }
+      ]
     }
   ];
 
@@ -100,7 +152,16 @@ const wishlist1 = [
       position: {
         lat: 47.8445,
         lng: 92.7236
-      }
+      },
+      hotels: [
+        {
+          name: 'Chandmani Inn',
+          distance: '100m from center',
+          price: '$25/night',
+          location: 'mock',
+          rating: 4,
+        }
+      ]
     },
     {
       id: 2,
