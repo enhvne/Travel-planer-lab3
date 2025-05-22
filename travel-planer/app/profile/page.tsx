@@ -1,31 +1,40 @@
 'use client'; 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import styles from './style.module.css';
-import '../../app/globals.css';
 import TopBar from '@/components/TopBar';
-import { FaUser, FaCog, FaHistory, FaHeart, FaSignOutAlt, FaEdit, FaComment, FaKey } from 'react-icons/fa';
+import { FaUser, FaCog, FaHistory, FaSignOutAlt, FaEdit, FaComment, FaKey } from 'react-icons/fa';
 import { User } from '@/models/model';
 
-// interface User {
-//   avatar: string;
-//   name: string;
-//   email: string;
-//   joinedDate: string;
-//   savedTours: number;
-//   completedTours: number;
-//   role: 'user' | 'admin';
-// }
-
 const ProfilePage = () => {
+  // Router
+  const router = useRouter();
+
+  // Token шалгах
+  useEffect(() => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    if (!token) {
+      router.push('/login');
+    }
+  }, [router]);
+
+  // Profile state-ууд
   const [activeTab, setActiveTab] = useState('info');
   const [user, setUser] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState<User | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
+  // Хэрэглэгчийн мэдээлэл авах
   useEffect(() => {
-    // Fetch user information from API
-    fetch('/api/user')
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    fetch('/api/user', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setUser(data);
@@ -33,29 +42,25 @@ const ProfilePage = () => {
       });
   }, []);
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
+  const handleEdit = () => setIsEditing(true);
 
   const handleSave = async () => {
     try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
       const response = await fetch('/api/user', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(editedUser),
       });
-
       if (response.ok) {
         const updatedUser = await response.json();
         setUser(updatedUser);
         setIsEditing(false);
       } else {
-        console.error('Failed to update profile');
+        alert('Failed to update profile');
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
+      alert('Error updating profile');
     }
   };
 
@@ -73,8 +78,33 @@ const ProfilePage = () => {
     }
   };
 
-  if (!user) return <p>Loading...</p>;
+  const handleEditPhoto = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setSelectedImage(ev.target?.result as string);
+        setEditedUser((prev) => prev ? { ...prev, image: ev.target?.result as string } : prev);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Logout function
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    router.push('/login');
+  };
+
+  if (!user) return <p>Loading user...</p>;
+
+  // Tab бүрийн контент
   const renderContent = () => {
     switch (activeTab) {
       case 'info':
@@ -82,13 +112,20 @@ const ProfilePage = () => {
           <div className={styles.infoSection}>
             <div className={styles.avatarContainer}>
               <Image
-                src={user.image}
+                src={selectedImage || user.image}
                 alt={user.name}
                 width={120}
                 height={120}
                 className={styles.avatar}
               />
-              <button className={styles.editAvatar}>Edit Photo</button>
+              <button className={styles.editAvatar} onClick={handleEditPhoto}>Edit Photo</button>
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                ref={fileInputRef}
+                onChange={handlePhotoChange}
+              />
             </div>
             <div className={styles.userInfo}>
               {isEditing ? (
@@ -124,7 +161,6 @@ const ProfilePage = () => {
                 <>
                   <h2>{user.name}</h2>
                   <p>{user.email}</p>
-                  {/* <p>Member since {user.joinedDate}</p> */}
                   <button onClick={handleEdit} className={styles.editButton}>
                     <FaEdit /> Edit Profile
                   </button>
@@ -133,11 +169,9 @@ const ProfilePage = () => {
             </div>
             <div className={styles.stats}>
               <div className={styles.statItem}>
-                {/* <span className={styles.statNumber}>{user.savedTours}</span> */}
                 <span className={styles.statLabel}>Saved Tours</span>
               </div>
               <div className={styles.statItem}>
-                {/* <span className={styles.statNumber}>{user.completedTours}</span>  */}
                 <span className={styles.statLabel}>Completed Tours</span>
               </div>
             </div>
@@ -156,7 +190,7 @@ const ProfilePage = () => {
               <select defaultValue="en">
                 <option value="en">English</option>
                 <option value="es">Spanish</option>
-                <option value="fr">French</option>
+                <option value="fr">Mongolia</option>
               </select>
             </div>
             <div className={styles.settingItem}>
@@ -164,31 +198,8 @@ const ProfilePage = () => {
               <select defaultValue="usd">
                 <option value="usd">USD</option>
                 <option value="eur">EUR</option>
-                <option value="gbp">GBP</option>
+                <option value="mnt">MNT</option>
               </select>
-            </div>
-          </div>
-        );
-      case 'activity':
-        return (
-          <div className={styles.activitySection}>
-            <h2>Recent Activity</h2>
-            <div className={styles.activityList}>
-              {/* Mock activity items */}
-              <div className={styles.activityItem}>
-                <FaHeart className={styles.activityIcon} />
-                <div className={styles.activityContent}>
-                  <p>Saved "Mountain Adventure" to wishlist</p>
-                  <span className={styles.activityDate}>2 days ago</span>
-                </div>
-              </div>
-              <div className={styles.activityItem}>
-                <FaHistory className={styles.activityIcon} />
-                <div className={styles.activityContent}>
-                  <p>Completed "Beach Resort" tour</p>
-                  <span className={styles.activityDate}>1 week ago</span>
-                </div>
-              </div>
             </div>
           </div>
         );
@@ -197,16 +208,28 @@ const ProfilePage = () => {
           <div className={styles.commentsSection}>
             <h2>My Comments</h2>
             <div className={styles.commentList}>
-              {/* Mock comment items */}
-              <div className={styles.commentItem}>
-                <p>"Great tour! Highly recommend."{user.comments?.[0]?.desc}</p>
-                <span className={styles.commentDate}>1 day ago</span>
-              </div>
-              <div className={styles.commentItem}>
-                <p>"Had a wonderful experience!"</p>
-                <span className={styles.commentDate}>3 days ago</span>
-              </div>
+              {user.comments && user.comments.filter(c => c.author === user.email).length > 0 ? (
+                user.comments
+                  .filter(c => c.author === user.email)
+                  .map((comment, idx) => (
+                    <div className={styles.commentItem} key={idx}>
+                      <p>{comment.desc}</p>
+                      <span className={styles.commentDate}>
+                        {comment.date ? new Date(comment.date).toLocaleDateString() : ''}
+                      </span>
+                    </div>
+                  ))
+              ) : (
+                <p>No comments yet.</p>
+              )}
             </div>
+          </div>
+        );
+      case 'history':
+        return (
+          <div>
+            <h2>Travel History</h2>
+            {/* Хэрэглэгчийн аяллын түүхийг энд харуулна */}
           </div>
         );
       case 'changePassword':
@@ -242,7 +265,7 @@ const ProfilePage = () => {
         <div className={styles.sidebar}>
           <div className={styles.sidebarHeader}>
             <Image
-              src={user.image}
+              src={selectedImage || user.image}
               alt={user.name}
               width={60}
               height={60}
@@ -266,18 +289,18 @@ const ProfilePage = () => {
               Settings
             </button>
             <button
-              className={`${styles.navItem} ${activeTab === 'activity' ? styles.active : ''}`}
-              onClick={() => setActiveTab('activity')}
-            >
-              <FaHistory className={styles.navIcon} />
-              Activity
-            </button>
-            <button
               className={`${styles.navItem} ${activeTab === 'comments' ? styles.active : ''}`}
               onClick={() => setActiveTab('comments')}
             >
               <FaComment className={styles.navIcon} />
               Comments
+            </button>
+            <button
+              className={`${styles.navItem} ${activeTab === 'history' ? styles.active : ''}`}
+              onClick={() => setActiveTab('history')}
+            >
+              <FaHistory className={styles.navIcon} />
+              History
             </button>
             <button
               className={`${styles.navItem} ${activeTab === 'changePassword' ? styles.active : ''}`}
@@ -287,7 +310,7 @@ const ProfilePage = () => {
               Change Password
             </button>
           </nav>
-          <button className={styles.logoutButton}>
+          <button className={styles.logoutButton} onClick={handleLogout}>
             <FaSignOutAlt className={styles.navIcon} />
             Logout
           </button>

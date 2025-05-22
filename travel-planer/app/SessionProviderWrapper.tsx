@@ -1,6 +1,7 @@
+'use client';
+import { SessionProvider } from "next-auth/react";
 import './globals.css'
 import type { Metadata } from 'next'
-import SessionProviderWrapper from './SessionProviderWrapper'
 
 export const metadata: Metadata = {
   title: 'Travel Planner',
@@ -21,4 +22,8 @@ export default function RootLayout({
       </body>
     </html>
   )
+}
+
+export function SessionProviderWrapper({ children }: { children: React.ReactNode }) {
+  return <SessionProvider>{children}</SessionProvider>;
 }

@@ -48,11 +48,12 @@ export default function Contact() {
                 throw new Error('Failed to send message');
             }
         } catch (error) {
-            setStatus({
-                type: 'error',
-                message: 'Failed to send message. Please try again later.'
-            });
-        }
+    console.error('Contact form error:', error); // Add this line
+    setStatus({
+        type: 'error',
+        message: 'Failed to send message. Please try again later.'
+    });
+}
     };
 
     return (

@@ -27,7 +27,7 @@ export interface Destination { //object
     overview: string,
     category: Category["id"][], // hiking, biking, climbing, chillig
     province: string,
-    images: string[],
+    image: string,
     location: {lat: number, lng: number},
     sum: string | null,
     rating: number,

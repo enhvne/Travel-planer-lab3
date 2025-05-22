@@ -9,21 +9,46 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      setError('Passwords do not match');
       return;
     }
-    // Handle registration logic here
-    console.log('Registration attempt with:', { name, email, password });
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.message || 'Registration failed');
+        return;
+      }
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+      // Redirect to login page after successful registration
+      router.push('/login');
+    } catch (err) {
+      setError('Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
         <h1 className={styles.title}>Register</h1>
+        {error && <div className={styles.error}>{error}</div>}
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
             <label htmlFor="name">Full Name</label>
@@ -33,6 +58,7 @@ const RegisterPage = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
           <div className={styles.inputGroup}>
@@ -43,6 +69,7 @@ const RegisterPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
           <div className={styles.inputGroup}>
@@ -53,6 +80,7 @@ const RegisterPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
           <div className={styles.inputGroup}>
@@ -63,10 +91,11 @@ const RegisterPage = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
-          <button type="submit" className={styles.submitButton}>
-            Register
+          <button type="submit" className={styles.submitButton} disabled={isLoading}>
+            {isLoading ? 'Registering...' : 'Register'}
           </button>
         </form>
         <p className={styles.loginLink}>
