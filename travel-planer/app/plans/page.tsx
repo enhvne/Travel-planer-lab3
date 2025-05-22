@@ -6,115 +6,7 @@ import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api'
 import styles from './style.module.css';
 import { mapStyles, retroStyle } from './mapStyles';
 import { useUser } from '@/context/UserContext';
-
-interface Location {
-  id: number;
-  name: string;
-  description: string;
-  isCurrentLocation?: boolean;
-  image?: string;
-  position: {
-    lat: number;
-    lng: number;
-  };
-  hotels?: {
-    name: string;
-    distance: string;
-    price: string;
-    location: string;
-    rating: number;
-  }[];
-}
-
-const locations: Location[] = [
-  {
-    id: 1,
-    name: 'Chandmani (location you are)',
-    description: '',
-    isCurrentLocation: true,
-    position: {
-      lat: 47.8445,
-      lng: 92.7236
-    }
-  },
-  {
-    id: 2,
-    name: 'Erdenekhairhan',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-    image: '',
-    position: {
-      lat: 47.3833,
-      lng: 92.4667
-    },
-    hotels: [
-      {
-        name: 'Erdene Guesthouse',
-        distance: '500m from center',
-        price: '$30/night',
-        location: 'fsf',
-        rating: 5,
-      },
-      {
-        name: 'Khairkhan Hotel',
-        distance: '700m from center',
-        price: '$45/night',
-        location: 'fsf',
-        rating: 5,
-      },
-      {
-        name: 'Khairkhan Hotel',
-        distance: '700m from center',
-        price: '$45/night',
-        location: 'fsf',
-        rating: 5,
-      },
-      {
-        name: 'Khairkhan Hotel',
-        distance: '700m from center',
-        price: '$45/night',
-        location: 'fsf',
-        rating: 5,
-      },
-      
-    ]
-  },
-  {
-    id: 3,
-    name: 'Buga',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-    position: {
-      lat: 47.2167,
-      lng: 92.3000
-    }
-  },
-  {
-    id: 4,
-    name: 'Zavhanmandal',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-    position: {
-      lat: 47.1500,
-      lng: 92.2500
-    }
-  },
-  {
-    id: 5,
-    name: 'Santmargats',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-    position: {
-      lat: 47.0833,
-      lng: 92.1667
-    }
-  },
-  {
-    id: 6,
-    name: 'Tsetsen-Uul',
-    description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-    position: {
-      lat: 47.0167,
-      lng: 92.0833
-    }
-  }
-];
+import type { WishList } from '@/models/model';
 
 const mapContainerStyle = {
   width: '100%',
@@ -133,16 +25,46 @@ const mapOptions = {
   styles: mapStyles,
 };
 
-export default function WishList() {
+export default function Plans() {
   const [markerIcons, setMarkerIcons] = useState<{ [key: string]: any }>({});
-  const path = locations.map(location => location.position);
-  const {user} = useUser();
+  const [wishlists, setWishlists] = useState<WishList[]>([]);
+  const [selectedWishListId, setSelectedWishListId] = useState<number|null>(null);
+  
+  
+  const { user } = useUser();
+
+  useEffect(()=>{
+    async function fetchData(){
+      try{
+        const res = await fetch(`/api/plans/2`);//${user?.id}
+        const data: WishList[] = await res.json();
+        setWishlists(data);
+
+        if (data.length > 0) {
+          setSelectedWishListId(data[0].id)
+        }
+      } catch(err){
+
+      }
+    }
+    fetchData();
+  }, []);
+
+  const selectedList = wishlists.find(w => w.id === selectedWishListId);
+
+  const path = selectedList?.destinations?.map(dest=> dest.location)||[]
 
   const onLoad = useCallback((map: any) => {
+    if (!selectedList?.destinations || selectedList.destinations.length === 0) return;
+  
     const bounds = new window.google.maps.LatLngBounds();
-    locations.forEach(location => bounds.extend(location.position));
+    selectedList.destinations.forEach(dest => {
+      if (dest.location) {
+        bounds.extend(dest.location);
+      }
+    });
     map.fitBounds(bounds);
-
+  
     const icons = {
       current: {
         url: '/icons/blue-marker.svg',
@@ -156,7 +78,8 @@ export default function WishList() {
       }
     };
     setMarkerIcons(icons);
-  }, []);
+  }, [selectedList]);
+  
 
   return (
     <div>
@@ -167,10 +90,16 @@ export default function WishList() {
               <h1>Your Travel Route {user?.id}-aar nevtersen</h1>
               <div className={styles.sortBy}>
                 <span>Lists:</span>
-                <select>
-                  <option value="date">Date</option>
-                  <option value="distance">Distance</option>
-                  <option value="popularity">Popularity</option>
+                <select
+                  id="wishlist-select"
+                  value={selectedWishListId ?? ""}
+                  onChange={(e) => setSelectedWishListId(Number(e.target.value))}
+                >
+                  {wishlists.map(wish => (
+                    <option key={wish.id} value={wish.id}>
+                      {wish.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -183,11 +112,11 @@ export default function WishList() {
                   onLoad={onLoad}
                   options={mapOptions}
                 >
-                  {locations.map((location) => (
+                  {selectedList?.destinations?.map((dest) => (
                     <Marker
-                      key={location.id}
-                      position={location.position}
-                      icon={markerIcons[location.isCurrentLocation ? 'current' : 'default']}
+                      key={dest.id}
+                      position={dest.location}
+                      icon={markerIcons[dest.isWishListed ? 'current' : 'default']}//bainga true
                     />
                   ))}
                   <Polyline
@@ -204,22 +133,25 @@ export default function WishList() {
           </div>
 
           <div className={styles.locationsList}>
-            {locations.map((location, index) => (
+            {selectedList?.destinations?.map((location, index) => (
               <div key={location.id} className={styles.locationItem}>
                 <div className={styles.locationMarker}>
-                  <div className={`${styles.marker} ${location.isCurrentLocation ? styles.currentMarker : ''}`}>
-                    {location.isCurrentLocation ? (
+                  <div className={`${styles.marker} ${location.isWishListed ? styles.currentMarker : ''}`}>
+                    {location.isWishListed ? (
                       <div className={styles.blueMarker} />
                     ) : (
                       <div className={styles.redMarker} />
                     )}
                   </div>
-                  {index < locations.length - 1 && <div className={styles.markerLine} />}
+                  {index < (selectedList?.destinations?.length ?? 0) - 1 && (
+                    <div className={styles.markerLine} />
+                  )}
+
                 </div>
                 <div className={styles.locationContent}>
-                  <h3>{location.name}</h3>
-                  {location.description && <p>{location.description}</p>}
-                  {location.image && (
+                  <h3>{location.title}</h3>
+                  {location.overview && <p>{location.overview}</p>}
+                  {/* {location.image && (
                     <div className={styles.locationImage}>
                       <Image
                         src={location.image}
@@ -229,11 +161,12 @@ export default function WishList() {
                         style={{ objectFit: 'cover' }}
                       />
                     </div>
-                  )}
+                  )} */}
                   {location.hotels && location.hotels.length > 0 && (
                     <div className={styles.hotelInfo}>
                       <h4>Nearby Hotels</h4>
                       <div className={styles.hotels}>
+
                         {location.hotels.map((hotel, i) => (
                           <div key={i} className={styles.hotel}>
                             <div className={styles.hotelImage}>
@@ -241,7 +174,7 @@ export default function WishList() {
                             </div>
                             <div className={styles.hotelDetails}>
                               <p><strong>Zochil buudel</strong></p>
-                              <p>location {hotel.location}</p>
+                              <p>location {hotel.distance}</p>
                               <p>{hotel.price} per night</p>
                               <div className={styles.stars}>
                                 🌟 {hotel.rating} stars
@@ -249,6 +182,7 @@ export default function WishList() {
                             </div>
                           </div>
                         ))}
+
                       </div>
                     </div>
                   )}
