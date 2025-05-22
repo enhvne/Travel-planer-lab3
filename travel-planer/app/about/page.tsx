@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import styles from './style.module.css';
 
-export default function AboutUs() {
+export default function AboutUs() {AboutUs
     return (
         <div>
             <br/>
@@ -26,7 +26,7 @@ export default function AboutUs() {
                     <div className={styles.teamGrid}>
                         <div className={styles.teamMember}>
                             <Image
-                                src="/images/profiles/tugsuu.jpg"
+                                src="/images/profile.png"
                                 alt="Team Member"
                                 width={200}
                                 height={200}
@@ -37,7 +37,7 @@ export default function AboutUs() {
                         </div>
                         <div className={styles.teamMember}>
                             <Image
-                                src="/images/profiles/leader.jpg"
+                                src="/images/profile.png"
                                 alt="Team Member"
                                 width={200}
                                 height={200}
@@ -48,7 +48,7 @@ export default function AboutUs() {
                         </div>
                         <div className={styles.teamMember}>
                             <Image
-                                src="/images/profiles/enhee.jpg"
+                                src="/images/profile.png"
                                 alt="Team Member"
                                 width={200}
                                 height={200}

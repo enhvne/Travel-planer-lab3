@@ -1,35 +1,47 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'
 
-// Түр хэрэглэгчийн мэдээлэл
-let user = {
+// Mock user data
+const mockUser = {
   name: 'John Doe',
   email: 'john.doe@example.com',
-  image: '/default-avatar.png',
-  comments: [
-    { desc: 'Nice trip!', date: '2024-05-01', author: 'john.doe@example.com' },
-    { desc: 'Other user comment', date: '2024-05-02', author: 'someone@example.com' }
-  ]
-};
-
-export async function GET(req: Request) {
-  // Токен шалгах (mock)
-  const auth = req.headers.get('authorization');
-  if (!auth || !auth.startsWith('Bearer ')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-  return NextResponse.json(user);
+  avatar: '/images/profile.png',
+  joinedDate: 'January 2024',
+  savedTours: 12,
+  completedTours: 5,
 }
 
+// GET handler
+export async function GET() {
+  return NextResponse.json(mockUser)
+}
+
+// POST handler
 export async function POST(req: Request) {
-  const auth = req.headers.get('authorization');
-  if (!auth || !auth.startsWith('Bearer ')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
   try {
-    const body = await req.json();
-    user = { ...user, ...body };
-    return NextResponse.json(user);
+    const { name, email } = await req.json()
+
+    if (!name || !email) {
+      return NextResponse.json({ error: 'Name and email are required' }, { status: 400 })
+    }
+
+    const newUser = {
+      name,
+      email,
+      avatar: '/images/default.png',
+      joinedDate: 'May 2025',
+      savedTours: 0,
+      completedTours: 0,
+    }
+
+    return NextResponse.json(
+      {
+        message: 'User created successfully',
+        user: newUser,
+      },
+      { status: 201 }
+    )
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
+    console.error('Error in POST /api/user:', error)
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }

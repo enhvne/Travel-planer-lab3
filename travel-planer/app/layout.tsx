@@ -1,5 +1,8 @@
 import './globals.css'
 import type { Metadata } from 'next'
+import TopBar from '@/components/TopBar'
+import Footer from '@/components/Footer'
+import { UserProvider } from '@/context/UserContext';
 
 export const metadata: Metadata = {
   title: 'Travel Planner',
@@ -9,12 +12,18 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  readonly children: React.ReactNode
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
       <body className="min-h-screen bg-gray-50">
-        {children}
+        <TopBar />
+        
+        <UserProvider>
+          {children}
+        </UserProvider>
+        
+        <Footer />
       </body>
     </html>
   )
