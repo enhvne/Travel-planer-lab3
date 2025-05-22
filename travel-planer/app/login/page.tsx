@@ -7,11 +7,39 @@ const LoginPage = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Login attempt with:', { email, password });
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.message || 'Login failed. Please check your credentials.');
+        return;
+      }
+
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+      router.push('/profile');
+
+    } catch (err) {
+      setError('An error occurred during login. Please try again.');
+      console.error('Login error:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -27,6 +55,7 @@ const LoginPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
           <div className={styles.inputGroup}>
@@ -37,10 +66,11 @@ const LoginPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isLoading}
             />
           </div>
-          <button type="submit" className={styles.submitButton}>
-            Login
+          <button type="submit" className={styles.submitButton} disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
         <p className={styles.registerLink}>

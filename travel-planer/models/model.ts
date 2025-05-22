@@ -11,6 +11,10 @@ export interface User {
     isPro: boolean,
     recently: Destination[] | null,
     messages: string[] | null,
+    savedTours?: number;
+    completedTours?: number;
+    settings?: Settings;
+    activity?: ActivityItem[];
 }
 
 export interface CommentU {
@@ -62,4 +66,16 @@ export interface WishList{
     name: string,
     destinations?: Destination[],
     user?: User['id'], // shaardalagatai bolood null bolgov. (unendee null bish)
+}
+
+export interface Settings {
+  emailNotifications: boolean;
+  language: string;
+  currency: string;
+}
+
+export interface ActivityItem {
+  id: number;
+  desc: string;
+  date: string;
 }
