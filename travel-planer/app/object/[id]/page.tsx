@@ -4,7 +4,8 @@ import React, { useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import Image from 'next/image';
 import styles from './../style.module.css';
-import { Destination, CommentU } from '@/models/model';
+import { Destination, CommentU, WishList } from '@/models/model';
+import { useUser } from '@/context/UserContext';
 
 
 type Props = {
@@ -16,6 +17,8 @@ type Props = {
 export default function ObjectPage({ params }: Props) {
   const router = useRouter();
   const { id } = params;
+  const { user } = useUser();
+  const [showWishlistSelector, setShowWishlistSelector] = useState(false);
   const [destination, setDestination] = useState<Destination>();
   const [mainImage, setMainImage] = useState(destination?.images?.[0] ?? "/images/mainImage.png");
   const [comments, setComments] = useState<CommentU[]>(destination?.comments??[]);
@@ -24,7 +27,42 @@ export default function ObjectPage({ params }: Props) {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [newComment, setNewComment] = useState({ rating: 5, desc: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [wishlists, setWishlists] = useState<WishList[]>([]);
 
+  useEffect(() => {
+    async function fetchWishlists() {
+      if (!user?.id) return;
+      try {
+        const res = await fetch(`/api/plans/${user.id}`);
+        const data: WishList[] = await res.json();
+        setWishlists(data);
+      } catch (err) {
+        console.error("Failed to fetch wishlists", err);
+      }
+    }
+  
+    fetchWishlists();
+  }, [user]);
+
+  const addDestinationToWishlist = async (wishlistId: number) => {
+    try {
+      const res = await fetch(`/api/plans/${wishlistId}/add`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ destinationId: destination?.id }),
+      });
+  
+      if (res.ok) {
+        setIsWishlisted(true);
+        setShowWishlistSelector(false);
+      } else {
+        alert("Нэмэхэд алдаа гарлаа.");
+      }
+    } catch (err) {
+      console.error("Failed to add to wishlist", err);
+    }
+  };
+  
   useEffect(() => {
     async function fetchData() {
       try {
@@ -51,7 +89,6 @@ export default function ObjectPage({ params }: Props) {
         );
         setSimilarVisions(similar);
         
-
       } catch (err) {
         console.error('Error fetching destination:', err);
       }
@@ -61,24 +98,19 @@ export default function ObjectPage({ params }: Props) {
   }, [id]);
 
   const handleWishlistToggle = async () => {
-    try {
-      const res = await fetch(`/api/wishList/${destination?.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ isWishlisted: !isWishlisted }),
-      });
+    if (!user) return;
   
-      if (res.ok) {
-        setIsWishlisted(prev => !prev); // Client state-г шинэчилнэ
-      } else {
-        console.error('Failed to update wishlist');
-      }
-    } catch (error) {
-      console.error('Error updating wishlist:', error);
+    if (wishlists.length === 1) {
+      // Зөвхөн 1 wishlist байгаа тул шууд нэмнэ
+      await addDestinationToWishlist(wishlists[0].id);
+    } else if (wishlists.length > 1) {
+      // 2 буюу түүнээс олон байвал хэрэглэгчээс аль нэгийг нь сонгуулах modal/select харуулна
+      setShowWishlistSelector(true);
+    } else {
+      alert("Та эхлээд wishlist үүсгээрэй.");
     }
   };
+  
   
   const handleCommentSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,6 +202,27 @@ export default function ObjectPage({ params }: Props) {
         <section className={styles.comments}>
           <h2>Comments</h2>
           
+          <div className={styles.commentsList}>
+            {comments.map(comment => (
+              <div key={comment.id} className={styles.commentCard}>
+                <div className={styles.rating}>
+                  {[...Array(5)].map((_, i) => (
+                    <span 
+                      key={i} 
+                      className={i < comment.rating ? styles.starFilled : styles.star}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+                <p className={styles.commentText}>{comment.desc}</p>
+                <div className={styles.commentMeta}>
+                  <span className={styles.author}>{comment.authorId}</span>
+                  <span className={styles.date}>{(comment.date).toString()}</span>
+                </div>
+              </div>
+            ))}
+          </div>
           {/* Add Comment Form */}
           <form onSubmit={handleCommentSubmit} className={styles.commentForm}>
             <div className={styles.ratingInput}>
@@ -201,28 +254,6 @@ export default function ObjectPage({ params }: Props) {
               {isSubmitting ? 'Submitting...' : 'Submit Comment'}
             </button>
           </form>
-
-          <div className={styles.commentsList}>
-            {comments.map(comment => (
-              <div key={comment.id} className={styles.commentCard}>
-                <div className={styles.rating}>
-                  {[...Array(5)].map((_, i) => (
-                    <span 
-                      key={i} 
-                      className={i < comment.rating ? styles.starFilled : styles.star}
-                    >
-                      ★
-                    </span>
-                  ))}
-                </div>
-                <p className={styles.commentText}>{comment.desc}</p>
-                <div className={styles.commentMeta}>
-                  <span className={styles.author}>{comment.author}</span>
-                  <span className={styles.date}>{(comment.date).toString()}</span>
-                </div>
-              </div>
-            ))}
-          </div>
         </section>
 
         <section className={styles.overview}>
@@ -236,7 +267,7 @@ export default function ObjectPage({ params }: Props) {
           <h2>Similar visions</h2>
           <div className={styles.similarGrid}>
             {similarVisions.slice(0, 5).map((vision, index) => (
-              <div key={vision.id} className={styles.similarCard} >
+              <div key={vision.id} className={styles.similarCard} onClick={() => router.push(`/object/${vision.id}`)}>
                 <div className={styles.similarImageContainer}>
                   <Image
                     src={vision.images[0]}
@@ -245,18 +276,7 @@ export default function ObjectPage({ params }: Props) {
                     height={300}
                     className={styles.similarImage}
                   />
-                  <span className={styles.visionTitle} onClick={() => router.push(`/object/${vision.id}`)}>{vision.title}</span>
-                  <button 
-                    className={styles.wishlistIcon}
-                    onClick={() => {}}
-                  >
-                    <Image
-                      src="/icons/heart.svg"
-                      alt="Add to wishlist"
-                      width={24}
-                      height={24}
-                    />
-                  </button>
+                  <span className={styles.visionTitle} >{vision.title}</span>
                 </div>
               </div>
             ))}

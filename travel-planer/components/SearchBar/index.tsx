@@ -27,7 +27,7 @@ const provinces = [
   "Ховд",
   "Хөвсгөл",
   "Хэнтий"
-];
+]//.map((name, i)=>({ id: i + 1, name }))
 
 const categories = [
   "Hiking",
@@ -47,9 +47,9 @@ export default function SearchBar() {
   const filteredPrvince = provinces.filter(province =>
     province.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  const filteredCategory = categories.filter(category =>
-    category.toLowerCase().includes(searchQueryType.toLowerCase())
-  );
+  // const filteredCategory = categories.filter(category =>
+  //   category.toLowerCase().includes(searchQueryType.toLowerCase())
+  // );
 
   const handleSearch = () => {
     // const searchParams = new URLSearchParams();
@@ -98,7 +98,7 @@ export default function SearchBar() {
           )}
         </div>
         
-        <div className={styles.searchInputContainer}>
+        {/* <div className={styles.searchInputContainer}>
           <input
               type="text"
               placeholder="What type"
@@ -129,7 +129,7 @@ export default function SearchBar() {
                 ))}
               </div>
             )}
-        </div>
+        </div> */}
         <button className={styles.searchButton} onClick={handleSearch}>
           <Image src="/icons/search.svg" alt="Search" width={24} height={24} />
         </button>

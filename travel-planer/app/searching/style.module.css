@@ -52,6 +52,11 @@ height: 20px;
 opacity: 0.7;
 }
 
+.ProvinceName{
+    font-weight: 800;
+    font-size: xx-large;
+}
+
 .categoryScroll {
 display: flex;
 gap: 0.75rem;

@@ -6,10 +6,10 @@ export interface User {
     username: string,
     email: string,
     password: string,
-    wishLists: WishList[] | null,
-    comments: CommentU[] | null,
+    wishLists: WishList["id"][] | null,
+    comments: CommentU["id"][] | null,
     isPro: boolean,
-    recently: Destination[] | null,
+    recently: Destination["id"][] | null,
     messages: string[] | null,
     savedTours?: number;
     completedTours?: number;
@@ -22,7 +22,7 @@ export interface CommentU {
     rating: number,
     date: Date | string,
     desc: string,
-    author: User["name"],
+    authorId: number,
 }
 
 export interface Destination { //object
@@ -54,6 +54,7 @@ export interface Hotel {
     distance: number | null,
     price: number,
     rating: number,
+    link: string,
 }
 
 export interface Province{
@@ -65,7 +66,7 @@ export interface Province{
 export interface WishList{
     id: number,
     name: string,
-    destinations?: Destination[],
+    destinations?: Destination["id"][],
     user?: User['id'], // shaardalagatai bolood null bolgov. (unendee null bish)
 }
 

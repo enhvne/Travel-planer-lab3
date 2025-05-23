@@ -3,8 +3,8 @@ import React, { useState , useEffect} from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Category, Destination } from '@/models/model';
+import { provinces } from '@/lib/mock-data';
 import styles from './../style.module.css';
-import { debuglog } from 'util';
 
 type Props = {
   params: {
@@ -33,7 +33,6 @@ export default function SearchPage({params}: Props) {
         const encodedProvince = encodeURIComponent(province)
         const res = await fetch(`/api/searching/${encodedProvince}`);
         const data: Destination[] = await res.json();
-        debuglog('called');
         setDestinations(data);
 
       } catch (err){
@@ -44,13 +43,15 @@ export default function SearchPage({params}: Props) {
     fetchData();
   }, [province]); //province oorchlogdoh burt ajilana
 
+  const currentProvinceName = destinations?.length
+  ? provinces.find(p => p.id === destinations[0].province)?.name + ' аймаг'
+  : 'Одоогоор газар байхгүй байна';
   const toggleCategory = (id: number) => {
     setSelectedCategories(prev =>
       prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
     );
   };
   
-
   const filteredDest = destinations.filter(place => {
     if (selectedCategories.length > 0) {
       const hasMatch = place.category.some(catId => selectedCategories.includes(catId));
@@ -66,6 +67,7 @@ export default function SearchPage({params}: Props) {
     <div>
       <div className={styles.searchPage}>
         <div className={styles.searchFilters}>
+          <p className={styles.ProvinceName}>{currentProvinceName}</p>
           <div className={styles.mainFilters}>
             <button className={styles.filterButton}>
               <Image

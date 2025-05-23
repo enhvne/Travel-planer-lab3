@@ -7,7 +7,7 @@ const wishlist1 = [
       title: 'Chandmani (location you are)',
       overview: '',
       isCurrentLocation: true,
-      position: {
+      location: {
         lat: 47.8445,
         lng: 92.7236
       },
@@ -26,7 +26,7 @@ const wishlist1 = [
       title: 'Erdenekhairhan',
       overview: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
       image: '',
-      position: {
+      location: {
         lat: 47.3833,
         lng: 92.4667
       },
@@ -66,7 +66,7 @@ const wishlist1 = [
       id: 3,
       title: 'Buga',
       overview: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-      position: {
+      location: {
         lat: 47.2167,
         lng: 92.3000
       },
@@ -91,7 +91,7 @@ const wishlist1 = [
       id: 4,
       title: 'Zavhanmandal',
       overview: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-      position: {
+      location: {
         lat: 47.1500,
         lng: 92.2500
       },
@@ -109,7 +109,7 @@ const wishlist1 = [
       id: 5,
       title: 'Santmargats',
       overview: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-      position: {
+      location: {
         lat: 47.0833,
         lng: 92.1667
       },
@@ -127,7 +127,7 @@ const wishlist1 = [
       id: 6,
       title: 'Tsetsen-Uul',
       overview: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
-      position: {
+      location: {
         lat: 47.0167,
         lng: 92.0833
       },
@@ -149,7 +149,7 @@ const wishlist1 = [
       title: 'Chandmani (location you are)',
       overview: '',
       isCurrentLocation: true,
-      position: {
+      location: {
         lat: 47.8445,
         lng: 92.7236
       },
@@ -168,7 +168,7 @@ const wishlist1 = [
       title: 'Erdenekhairhan',
       overview: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. A ratione, laborum totam labore exercitationem cum maxime dolorem voluptatum molestiae eaque repellat error, accusamus consequuntur cumque at sunt sapiente nobis iusto et ipsam necessitatibus. Id, itaque?',
       image: '',
-      position: {
+      location: {
         lat: 47.3833,
         lng: 92.4667
       },

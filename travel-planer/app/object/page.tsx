@@ -84,7 +84,7 @@ export default function ObjectPage() {
                 </div>
                 <p className={styles.commentText}>{comment.desc}</p>
                 <div className={styles.commentMeta}>
-                  <span className={styles.author}>{comment.author}</span>
+                  <span className={styles.author}>{comment.authorId}</span>
                   <span className={styles.date}>{(comment.date).toString()}</span>
                 </div>
                 {/* <button className={styles.readMore}>read more</button> */}
