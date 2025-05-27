@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './style.module.css';
 import { FaUser, FaCog, FaComment, FaSignOutAlt, FaEdit, FaKey } from 'react-icons/fa';
-import { User , Settings} from '@/models/model';
+import { User , Settings} from '@/models/FrontEnd/model';
 import { useRouter } from 'next/navigation';
 
 const ProfilePage = () => {

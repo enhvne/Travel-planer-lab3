@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import styles from "./style.module.css";
-import type { WishList, User } from '@/models/model';
+import type { WishList, User } from '@/models/FrontEnd/model';
 import { useUser } from '@/context/UserContext';
 
 export default function WishList() {
@@ -178,7 +178,7 @@ export default function WishList() {
                                         className={styles.wishListItemImage}
                                     />
                                     <p>{destId.title}</p>
-                                    <p>{destId.province}</p>
+                                    <p>{destId.province.name}</p>
                                     <button
                                         className={styles.deleteBtn}
                                         onClick={() => deleteDestinationFromWishlist(selectedId, destId.id)}

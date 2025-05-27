@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import styles from './style.module.css';
+import { useUser } from '@/context/UserContext';
 
 
 export default function Contact() {
+    const { user } = useUser();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -22,6 +24,7 @@ export default function Contact() {
             ...formData,
             [e.target.name]: e.target.value
         });
+        
     };
 
     const handleSubmit = async (e: React.FormEvent) => {

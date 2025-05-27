@@ -2,6 +2,7 @@ export interface User {
     id: number,
     name: string,
     image: string,
+    token: string;
     role: string,
     username: string,
     email: string,
@@ -22,7 +23,7 @@ export interface CommentU {
     rating: number,
     date: Date | string,
     desc: string,
-    authorId: number,
+    author: string,
 }
 
 export interface Destination { //object

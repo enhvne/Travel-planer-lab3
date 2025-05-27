@@ -6,7 +6,7 @@ import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api'
 import styles from './style.module.css';
 import { mapStyles, retroStyle } from './mapStyles';
 import { useUser } from '@/context/UserContext';
-import type { WishList } from '@/models/model';
+import type { WishList } from '@/models/FrontEnd/model';
 
 const mapContainerStyle = {
   width: '100%',

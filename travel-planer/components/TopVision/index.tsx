@@ -1,13 +1,12 @@
  'use client';
 
-import { Destination } from '@/models/model';
+import { Destination } from '@/models/FrontEnd/model';
  import Image from 'next/image'
  import { useRouter } from 'next/navigation';
  import { useEffect, useState } from "react";
  
  export default function TopVisions(){
-    const router = useRouter()
-    /// useState<visions[]>([]) ene int
+    const router = useRouter();
     const [topVisions, setTopVisions] = useState<Destination[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -28,6 +27,9 @@ import { Destination } from '@/models/model';
       };
       fetchVisions();
     }, []); 
+    
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
     
     return(
         <div>

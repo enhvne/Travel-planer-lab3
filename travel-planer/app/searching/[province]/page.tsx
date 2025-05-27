@@ -2,7 +2,7 @@
 import React, { useState , useEffect} from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Category, Destination } from '@/models/model';
+import { Category, Destination } from '@/models/FrontEnd/model';
 import { provinces } from '@/lib/mock-data';
 import styles from './../style.module.css';
 
@@ -44,7 +44,7 @@ export default function SearchPage({params}: Props) {
   }, [province]); //province oorchlogdoh burt ajilana
 
   const currentProvinceName = destinations?.length
-  ? provinces.find(p => p.id === destinations[0].province)?.name + ' аймаг'
+  ? provinces.find(p => p.id === destinations[0].province.id)?.name + ' аймаг'
   : 'Одоогоор газар байхгүй байна';
   const toggleCategory = (id: number) => {
     setSelectedCategories(prev =>
@@ -54,7 +54,7 @@ export default function SearchPage({params}: Props) {
   
   const filteredDest = destinations.filter(place => {
     if (selectedCategories.length > 0) {
-      const hasMatch = place.category.some(catId => selectedCategories.includes(catId));
+      const hasMatch = place.category.some(catId => selectedCategories.includes(catId.id));
       if (!hasMatch) return false;
     }
     return true;

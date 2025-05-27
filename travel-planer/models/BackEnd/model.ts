@@ -2,6 +2,7 @@ export interface User {
     id: number,
     name: string,
     image: string,
+    token: string, // token
     role: string,
     username: string,
     email: string,
@@ -80,4 +81,11 @@ export interface ActivityItem {
   id: number;
   desc: string;
   date: string;
+}
+
+export interface Contact{
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
 }

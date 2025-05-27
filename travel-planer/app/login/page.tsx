@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './style.module.css';
+import { useUser } from '@/context/UserContext';
 
 const LoginPage = () => {
   const router = useRouter();
+  const { setUser } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +34,13 @@ const LoginPage = () => {
 
       const data = await response.json();
       localStorage.setItem('token', data.token);
-      router.push('/profile');
+      setUser(data.user);
+      
+      if (window.history.length > 1) {
+        router.back();
+      } else {
+        router.push('/'); // эсвэл default хуудас
+      }
 
     } catch (err) {
       setError('An error occurred during login. Please try again.');

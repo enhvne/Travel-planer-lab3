@@ -1,6 +1,6 @@
 'use client';
 
-import { Province } from "@/models/model";
+import { Province } from "@/models/FrontEnd/model";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";

@@ -4,7 +4,7 @@ import React, { useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import Image from 'next/image';
 import styles from './../style.module.css';
-import { Destination, CommentU, WishList } from '@/models/model';
+import { Destination, CommentU, WishList, Category } from '@/models/FrontEnd/model';
 import { useUser } from '@/context/UserContext';
 
 
@@ -85,8 +85,12 @@ export default function ObjectPage({ params }: Props) {
 
         const similar = data.filter(s =>
           s.id !== dest.id &&
-          s.category.some((id: number) => dest.category.includes(id))
+          s.category.some((cat: Category) =>
+            dest.category.some((dCat: Category) => dCat.id === cat.id)
+          )
         );
+        
+        
         setSimilarVisions(similar);
         
       } catch (err) {
@@ -155,7 +159,7 @@ export default function ObjectPage({ params }: Props) {
   return (
     <div>
       <main className={styles.main}>
-        <h1 className={styles.title}>{destination?.title}, {destination?.province} {id}</h1>
+        <h1 className={styles.title}>{destination?.title}, {destination?.province.name} {id}</h1>
         
         <div className={styles.imageSection}>
           <div className={styles.thumbnailGallery}>

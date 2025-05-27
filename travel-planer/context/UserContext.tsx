@@ -1,7 +1,7 @@
 // context/UserContext.tsx
 'use client';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '@/models/model'; 
+import { User } from '@/models/FrontEnd/model'; 
 
 const UserContext = createContext<{
   user: User | null;
