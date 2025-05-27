@@ -1,3 +1,4 @@
+//pages/register/page.tsx
 'use client'; 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -26,7 +27,7 @@ const RegisterPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({name, email, password }),
       });
 
       if (!response.ok) {

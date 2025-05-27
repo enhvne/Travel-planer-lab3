@@ -1,11 +1,18 @@
-// models/Comment.ts
-import mongoose, { Schema } from 'mongoose';
+// models/CommentU.ts
+import mongoose, { Schema, Document } from "mongoose";
 
-const CommentSchema = new Schema({
+export interface ICommentU extends Document {
+  rating: number;
+  date: Date;
+  desc: string;
+  authorId: mongoose.Types.ObjectId;
+}
+
+const CommentUSchema = new Schema<ICommentU>({
   rating: { type: Number, required: true },
   date: { type: Date, required: true },
   desc: { type: String, required: true },
-  authorId: { type: Number, required: true },
+  authorId: { type: Schema.Types.ObjectId, ref: "User", required: true }
 });
 
-export default mongoose.models.CommentU || mongoose.model('CommentU', CommentSchema);
+export const CommentUModel = mongoose.model<ICommentU>("CommentU", CommentUSchema);
