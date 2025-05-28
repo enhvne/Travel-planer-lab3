@@ -34,4 +34,5 @@ const DestinationSchema = new Schema<IDestination>({
   isWishListed: { type: Boolean, default: false }
 });
 
-export const DestinationModel = mongoose.model<IDestination>("Destination", DestinationSchema);
+export const DestinationModel =
+  mongoose.models.Destination || mongoose.model<IDestination>("Destination", DestinationSchema);

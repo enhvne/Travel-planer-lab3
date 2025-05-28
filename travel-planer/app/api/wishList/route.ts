@@ -1,3 +1,28 @@
+
+// app/api/wishlists/route.ts
+// import { NextResponse } from 'next/server';
+// import { connectToDB } from '@/lib/mongoose';
+// import { WishListModel } from '@/lib/model/WishList';
+
+// export async function GET() {
+//   try {
+//     await connectToDB();
+//     // const wishLists = await WishListModel.find(userId ? { user: userId } : {}) 
+//     const wishLists = await WishListModel.find()
+//       .populate({
+//         path: 'destinations',
+//         select: 'title images', // зөвхөн title, images-г авна
+//       })
+//       .populate('user') // Хэрэгтэй бол user info-г авна
+//       .lean();
+
+//     return NextResponse.json(wishLists);
+//   } catch (error) {
+//     console.error('Failed to fetch wishlists:', error);
+//     return NextResponse.json({ message: 'Server error' }, { status: 500 });
+//   }
+// }
+
 import { NextResponse } from 'next/server';
 import { title } from 'process';
 

@@ -7,6 +7,63 @@ export async function GET(){
     return NextResponse.json(destination);
 }
 
+// app/api/destinations/route.ts
+// import { NextResponse } from 'next/server';
+// import { connectToDB } from '@/lib/mongoose';
+// import { DestinationModel } from '@/lib/model/Destination';
+
+// export async function GET() {
+//   try {
+//     await connectToDB();
+
+//     const destinations = await DestinationModel.find()
+//       .populate('category')
+//       .populate('province')
+//       .populate('comments')
+//       .populate('hotels')
+//       .lean();
+
+//     // _id-г id болгон хөрвүүлэх + нийцүүлэлт
+//     const transformed = destinations.map((dest: any) => ({
+//       id: dest._id.toString(),
+//       title: dest.title,
+//       overview: dest.overview,
+//       category: dest.category.map((c: any) => ({
+//         id: c._id.toString(),
+//         name: c.name,
+//       })),
+//       province: {
+//         id: dest.province._id.toString(),
+//         name: dest.province.name,
+//         image: dest.province.image,
+//       },
+//       images: dest.images,
+//       location: dest.location,
+//       sum: dest.sum || null,
+//       rating: dest.rating,
+//       filters: dest.filters,
+//       comments: dest.comments?.map((c: any) => ({
+//         id: c._id.toString(),
+//         content: c.content,
+//         user: c.user,
+//         date: c.date,
+//       })) || null,
+//       hotels: dest.hotels?.map((h: any) => ({
+//         id: h._id.toString(),
+//         name: h.name,
+//         location: h.location,
+//         stars: h.stars,
+//         image: h.image,
+//       })) || null,
+//       isWishListed: dest.isWishListed,
+//     }));
+
+//     return NextResponse.json(transformed);
+//   } catch (error) {
+//     console.error('Failed to fetch destinations:', error);
+//     return NextResponse.json({ message: 'Server error' }, { status: 500 });
+//   }
+// }
 
 const user1={id: 1, name: 'tsend_Sh'}
 const user2={id: 1, name: 'baatar_Sh'}

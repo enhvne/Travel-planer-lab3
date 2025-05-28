@@ -2,28 +2,29 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from './style.module.css';
-import { FaUser, FaCog, FaComment, FaSignOutAlt, FaEdit, FaKey } from 'react-icons/fa';
-import { User , Settings} from '@/models/FrontEnd/model';
+import { FaUser, FaCog, FaComment, FaSignOutAlt, FaEdit, FaKey, FaPlus, FaTrash } from 'react-icons/fa';
+import { User, Settings } from '@/models/FrontEnd/model';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@/context/UserContext';
 
 const ProfilePage = () => {
   const router = useRouter();
+  const { user, updateUser, logout, loading, error } = useUser();
   const [activeTab, setActiveTab] = useState('info');
-  const [user, setUser] = useState<User | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState<User | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   // State for Settings form
-  const [settings, setSettings] = useState<Settings>({ // Initialize with default or fetched data
+  const [settings, setSettings] = useState<Settings>({
     emailNotifications: true,
     language: 'en',
     currency: 'usd',
   });
   const [isSavingSettings, setIsSavingSettings] = useState(false);
 
-  // State for Change Password form (frontend only mock)
+  // State for Change Password form
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
@@ -33,41 +34,37 @@ const ProfilePage = () => {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [passwordSuccess, setPasswordSuccess] = useState('');
 
+  // Destinations state
+  const [destinations, setDestinations] = useState<Array<{ id: string; image?: string; title?: string; location?: string; type?: string; description: string }>>([]);
+  const [newDestination, setNewDestination] = useState({ image: '', title: '', location: '', type: '', description: '' });
+  const [isAddingDestination, setIsAddingDestination] = useState(false);
+  const [editingDestination, setEditingDestination] = useState<{ id: string; image?: string; title?: string; location?: string; type?: string; description: string } | null>(null);
+
   useEffect(() => {
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-    if (!token) {
+    if (!user) {
       router.push('/login');
       return;
     }
 
-    fetch('/api/user', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) {
-          localStorage.removeItem('token');
-          router.push('/login');
-          throw new Error('Failed to fetch user data');
-        }
-        return res.json();
-      })
-      .then((data: User) => {
-        setUser(data);
-        setEditedUser(data);
-        if (data.settings) setSettings(data.settings); // Initialize settings state
-      })
-      .catch((error) => {
-        console.error('Error fetching user data:', error);
-        localStorage.removeItem('token');
-        router.push('/login');
-      });
+    setEditedUser(user);
+    if (user.settings) setSettings(user.settings);
 
-  }, [router]);
+    // Fetch destinations if user is admin
+    if (user.role === 'admin') {
+      const token = localStorage.getItem('token');
+      fetch('/api/destinations', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+        .then(res => res.json())
+        .then(data => setDestinations(data))
+        .catch(error => console.error('Error fetching destinations:', error));
+    }
+  }, [user, router]);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    logout();
     router.push('/login');
   };
 
@@ -79,33 +76,17 @@ const ProfilePage = () => {
     if (!editedUser) return;
 
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-      const response = await fetch('/api/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ name: editedUser.name, email: editedUser.email, image: editedUser.image }),
+      await updateUser({
+        name: editedUser.name,
+        email: editedUser.email,
+        image: editedUser.image,
       });
-
-      if (response.ok) {
-        const updatedUser = await response.json();
-        setUser(updatedUser);
-        setEditedUser(updatedUser);
-        setIsEditing(false);
-        setSelectedImage(null); // Clear selected image after saving
-      } else {
-        console.error('Failed to update profile');
-        alert('Failed to update profile');
-      }
+      setIsEditing(false);
+      setSelectedImage(null);
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('Error updating profile');
     }
-  };
-
-  const handleCancel = () => {
-    setEditedUser(user);
-    setSelectedImage(null); // Clear selected image on cancel
-    setIsEditing(false);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,22 +129,8 @@ const ProfilePage = () => {
   const handleSaveSettings = async () => {
     setIsSavingSettings(true);
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-      const response = await fetch('/api/user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ settings: settings }),
-      });
-
-      if (response.ok) {
-        const updatedUser = await response.json();
-        setUser(updatedUser);
-        setEditedUser(updatedUser);
-        alert('Settings saved successfully!');
-      } else {
-        console.error('Failed to save settings');
-        alert('Failed to save settings.');
-      }
+      await updateUser({ settings: settings });
+      alert('Settings saved successfully!');
     } catch (error) {
       console.error('Error saving settings:', error);
       alert('Error saving settings.');
@@ -196,12 +163,11 @@ const ProfilePage = () => {
     }
 
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-      const response = await fetch('/api/user', {
+      const response = await fetch('/api/user/password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({
           currentPassword: passwordForm.currentPassword,
@@ -209,9 +175,8 @@ const ProfilePage = () => {
         }),
       });
 
-      const data = await response.json();
-      
       if (!response.ok) {
+        const data = await response.json();
         setPasswordError(data.error || 'Failed to change password');
       } else {
         setPasswordSuccess('Password changed successfully');
@@ -224,7 +189,71 @@ const ProfilePage = () => {
     }
   };
 
-  if (!user) return <p>Loading...</p>;
+  const handleAddDestination = () => {
+    setIsAddingDestination(true);
+  };
+
+  const handleSaveDestination = async () => {
+    try {
+      const response = await fetch('/api/destinations', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(newDestination),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setDestinations([...destinations, data]);
+        setNewDestination({ image: '', title: '', location: '', type: '', description: '' });
+        setIsAddingDestination(false);
+      }
+    } catch (error) {
+      console.error('Error adding destination:', error);
+    }
+  };
+
+  const handleEditDestination = (destination: { id: string; image?: string; title?: string; location?: string; type?: string; description: string }) => {
+    setEditingDestination(destination);
+  };
+
+  const handleUpdateDestination = async () => {
+    if (!editingDestination) return;
+    try {
+      await fetch(`/api/destinations/${editingDestination.id}`, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(editingDestination),
+      });
+      setDestinations(destinations.map(d => d.id === editingDestination.id ? editingDestination : d));
+      setEditingDestination(null);
+    } catch (error) {
+      console.error('Error updating destination:', error);
+    }
+  };
+
+  const handleDeleteDestination = async (id: string) => {
+    try {
+      await fetch(`/api/destinations/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      setDestinations(destinations.filter(d => d.id !== id));
+    } catch (error) {
+      console.error('Error deleting destination:', error);
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (!user) return null;
 
   const renderContent = () => {
     switch (activeTab) {
@@ -275,7 +304,7 @@ const ProfilePage = () => {
                     <button onClick={handleSave} className={styles.saveButton}>
                       Save
                     </button>
-                    <button onClick={handleCancel} className={styles.cancelButton}>
+                    <button onClick={() => setIsEditing(false)} className={styles.cancelButton}>
                       Cancel
                     </button>
                   </div>
@@ -386,6 +415,128 @@ const ProfilePage = () => {
             </div>
           </div>
         );
+      case 'destinations':
+        if (user?.role !== 'admin') {
+          return <div>Access denied. Admin privileges required.</div>;
+        }
+        return (
+          <div className={styles.destinationsSection}>
+            <h2>Manage Destinations</h2>
+            <button onClick={handleAddDestination} className={styles.addButton}>
+              <FaPlus /> Add New Destination
+            </button>
+            {isAddingDestination && (
+              <div className={styles.destinationForm}>
+                <label className={styles.formLabel}>image</label>
+                <input
+                  type="text"
+                  placeholder="url of images"
+                  value={newDestination.image || ''}
+                  onChange={e => setNewDestination({ ...newDestination, image: e.target.value })}
+                  className={styles.input}
+                />
+                <label className={styles.formLabel}>title of trip</label>
+                <input
+                  type="text"
+                  placeholder="title of trip"
+                  value={newDestination.title || ''}
+                  onChange={e => setNewDestination({ ...newDestination, title: e.target.value })}
+                  className={styles.input}
+                />
+                <label className={styles.formLabel}>location</label>
+                <input
+                  type="text"
+                  placeholder="location"
+                  value={newDestination.location || ''}
+                  onChange={e => setNewDestination({ ...newDestination, location: e.target.value })}
+                  className={styles.input}
+                />
+                <label className={styles.formLabel}>type</label>
+                <input
+                  type="text"
+                  placeholder="type"
+                  value={newDestination.type || ''}
+                  onChange={e => setNewDestination({ ...newDestination, type: e.target.value })}
+                  className={styles.input}
+                />
+                <label className={styles.formLabel}>description</label>
+                <textarea
+                  placeholder="description"
+                  value={newDestination.description || ''}
+                  onChange={e => setNewDestination({ ...newDestination, description: e.target.value })}
+                  className={styles.textarea}
+                />
+                <div className={styles.buttonGroup}>
+                  <button onClick={handleSaveDestination} className={styles.saveButton}>Save</button>
+                  <button onClick={() => setIsAddingDestination(false)} className={styles.cancelButton}>Cancel</button>
+                </div>
+              </div>
+            )}
+            <div className={styles.destinationsList}>
+              {destinations.map(destination => (
+                <div key={destination.id} className={styles.destinationItem}>
+                  {editingDestination && editingDestination.id === destination.id ? (
+                    <div className={styles.destinationForm}>
+                      <label className={styles.formLabel}>image</label>
+                      <input
+                        type="text"
+                        value={editingDestination.image || ''}
+                        onChange={e => setEditingDestination({ ...editingDestination, image: e.target.value })}
+                        className={styles.input}
+                      />
+                      <label className={styles.formLabel}>title of trip</label>
+                      <input
+                        type="text"
+                        value={editingDestination.title || ''}
+                        onChange={e => setEditingDestination({ ...editingDestination, title: e.target.value })}
+                        className={styles.input}
+                      />
+                      <label className={styles.formLabel}>location</label>
+                      <input
+                        type="text"
+                        value={editingDestination.location || ''}
+                        onChange={e => setEditingDestination({ ...editingDestination, location: e.target.value })}
+                        className={styles.input}
+                      />
+                      <label className={styles.formLabel}>type</label>
+                      <input
+                        type="text"
+                        value={editingDestination.type || ''}
+                        onChange={e => setEditingDestination({ ...editingDestination, type: e.target.value })}
+                        className={styles.input}
+                      />
+                      <label className={styles.formLabel}>description</label>
+                      <textarea
+                        value={editingDestination.description || ''}
+                        onChange={e => setEditingDestination({ ...editingDestination, description: e.target.value })}
+                        className={styles.textarea}
+                      />
+                      <div className={styles.buttonGroup}>
+                        <button onClick={handleUpdateDestination} className={styles.saveButton}>Update</button>
+                        <button onClick={() => setEditingDestination(null)} className={styles.cancelButton}>Cancel</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={styles.destinationContent}>
+                      <div className={styles.destinationInfo}>
+                        <h3>{destination.title}</h3>
+                        <p>{destination.description}</p>
+                      </div>
+                      <div className={styles.destinationActions}>
+                        <button onClick={() => handleEditDestination(destination)} className={styles.editButton}>
+                          <FaEdit /> Edit
+                        </button>
+                        <button onClick={() => handleDeleteDestination(destination.id)} className={styles.deleteButton}>
+                          <FaTrash /> Delete
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
       default:
         return null;
     }
@@ -434,6 +585,15 @@ const ProfilePage = () => {
               <FaKey className={styles.navIcon} />
               Change Password
             </button>
+            {user?.role === 'admin' && (
+              <button
+                className={`${styles.navItem} ${activeTab === 'destinations' ? styles.active : ''}`}
+                onClick={() => setActiveTab('destinations')}
+              >
+                <FaPlus className={styles.navIcon} />
+                Manage Destinations
+              </button>
+            )}
           </nav>
           <button className={styles.logoutButton} onClick={handleLogout}>
             <FaSignOutAlt className={styles.navIcon} />

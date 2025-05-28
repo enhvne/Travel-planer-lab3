@@ -1,6 +1,55 @@
 import { WishList } from "@/models/model";
 import { NextRequest, NextResponse } from "next/server"
 
+
+
+
+export async function GET(
+  request: Request,
+  { params }: {params: {userid: number}}
+){
+  const UserId = params.userid;
+  let filteredWisgList = wishlists;
+  if (UserId) {
+      filteredWisgList = wishlists.filter(item =>item.userId == UserId)
+  }
+  return NextResponse.json(filteredWisgList)
+}
+
+// // app/api/wishlists/[userid]/route.ts
+// import { connectToDB } from "@/lib/mongoose";
+// import { WishListModel } from "@/lib/model/WishList";
+// import { NextResponse } from "next/server";
+
+// export async function GET(
+//   _request: Request,
+//   { params }: { params: { userid: string } }
+// ) {
+//   try {
+//     await connectToDB();
+
+//     const userId = params.userid;
+
+//     const wishlists = await WishListModel.find({ user: userId })
+//       .populate({
+//         path: "destinations",
+//         populate: [
+//           { path: "category" },
+//           { path: "province" },
+//           { path: "comments" },
+//           { path: "hotels" }
+//         ]
+//       })
+//       .lean();
+
+//     return NextResponse.json(wishlists);
+//   } catch (error) {
+//     console.error("Failed to fetch wishlists:", error);
+//     return NextResponse.json({ message: "Server error" }, { status: 500 });
+//   }
+// }
+
+
 const wishlist1 = [
     {
       id: 1,
@@ -212,14 +261,3 @@ let wishlists=[
     {id: 3, name: 'wishlist2-1', destinations: wishlist1, userId: 2}
 
 ]
-export async function GET(
-    request: Request,
-    { params }: {params: {userid: number}}
-){
-    const UserId = params.userid;
-    let filteredWisgList = wishlists;
-    if (UserId) {
-        filteredWisgList = wishlists.filter(item =>item.userId == UserId)
-    }
-    return NextResponse.json(filteredWisgList)
-}

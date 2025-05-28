@@ -33,6 +33,7 @@ export async function POST(request: Request) {
         name: user.name,
         email: user.email,
         username: user.username,
+        role: user.role,
       },
       token,
     });

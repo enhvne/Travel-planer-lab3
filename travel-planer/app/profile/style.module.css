@@ -396,3 +396,114 @@
     gap: 1rem;
   }
 }
+
+.destinationsSection {
+  padding: 20px;
+}
+
+.addButton {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.destinationForm {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.saveButton {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.destinationsList {
+  display: grid;
+  gap: 20px;
+}
+
+.destinationItem {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.destinationContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.destinationInfo h3 {
+  margin: 0 0 8px 0;
+}
+
+.destinationInfo p {
+  margin: 0;
+  color: #666;
+}
+
+.destinationActions {
+  display: flex;
+  gap: 10px;
+}
+
+.editButton {
+  background-color: #2196F3;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.deleteButton {
+  background-color: #f44336;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

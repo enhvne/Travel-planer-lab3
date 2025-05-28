@@ -1,4 +1,3 @@
-// models/Category.ts
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface ICategory extends Document {
@@ -9,4 +8,6 @@ const CategorySchema = new Schema<ICategory>({
   name: { type: String, required: true }
 });
 
-export const CategoryModel = mongoose.model<ICategory>("Category", CategorySchema);
+// Давхар model үүсгэхээс сэргийлнэ
+export const CategoryModel =
+  mongoose.models.Category || mongoose.model<ICategory>("Category", CategorySchema);

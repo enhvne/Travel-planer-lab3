@@ -11,4 +11,5 @@ const ProvinceSchema = new Schema<IProvince>({
   image: { type: String, required: true }
 });
 
-export const ProvinceModel = mongoose.model<IProvince>("Province", ProvinceSchema);
+export const ProvinceModel =
+  mongoose.models.Province || mongoose.model<IProvince>("Province", ProvinceSchema);
