@@ -41,7 +41,7 @@ import { Destination } from '@/models/FrontEnd/model';
                   <div 
                     key={index} 
                     className="card"
-                    onClick={() => router.push(`/object/${vision.id}`)}
+                    onClick={() => router.push(`/destination/${vision.id}`)}
                   >
                     <Image
                       src={vision.images[0]}

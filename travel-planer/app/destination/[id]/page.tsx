@@ -66,7 +66,7 @@ export default function ObjectPage({ params }: Props) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch('/api/object');
+        const res = await fetch('/api/destination');
         const data: Destination[] = await res.json();
 
         const dest = data.find(d => d.id === Number(id)) ?? data[0]; // id-р шүүж авах
@@ -131,7 +131,7 @@ export default function ObjectPage({ params }: Props) {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch(`/api/object/${id}/comment`, {
+      const res = await fetch(`/api/destination/${id}/comment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -221,7 +221,7 @@ export default function ObjectPage({ params }: Props) {
                 </div>
                 <p className={styles.commentText}>{comment.desc}</p>
                 <div className={styles.commentMeta}>
-                  <span className={styles.author}>{comment.authorId}</span>
+                  <span className={styles.author}>{comment.author}</span>
                   <span className={styles.date}>{(comment.date).toString()}</span>
                 </div>
               </div>
@@ -271,7 +271,7 @@ export default function ObjectPage({ params }: Props) {
           <h2>Similar visions</h2>
           <div className={styles.similarGrid}>
             {similarVisions.slice(0, 5).map((vision, index) => (
-              <div key={vision.id} className={styles.similarCard} onClick={() => router.push(`/object/${vision.id}`)}>
+              <div key={vision.id} className={styles.similarCard} onClick={() => router.push(`/destination/${vision.id}`)}>
                 <div className={styles.similarImageContainer}>
                   <Image
                     src={vision.images[0]}

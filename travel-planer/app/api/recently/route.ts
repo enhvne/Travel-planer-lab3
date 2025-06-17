@@ -40,7 +40,7 @@ let recentlyViewed = [
 
 // GET - get all recently viewed
 export async function GET() {
-  const sortedItems = [...recentlyViewed].sort(
+  const sortedItems = [...recentlyViewed].sort( 
     (a, b) => new Date(b.viewedAt).getTime() - new Date(a.viewedAt).getTime()
   );
   return NextResponse.json(sortedItems);

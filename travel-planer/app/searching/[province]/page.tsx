@@ -98,7 +98,7 @@ export default function SearchPage({params}: Props) {
             <div 
               key={dest.id} 
               className={styles.resultCard}
-              onClick={() => router.push(`/object/${dest.id}`)}
+              onClick={() => router.push(`/destination/${dest.id}`)}
             >
               <div className={styles.imageContainer}>
                 <Image
